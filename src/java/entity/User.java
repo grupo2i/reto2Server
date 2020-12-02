@@ -59,6 +59,87 @@ public class User implements Serializable {
     private Timestamp lastAccess;
     @NotNull
     private Timestamp lastPasswordChange;
+
+    
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public UserStatus getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(UserStatus userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public UserPrivilege getUserPrivilege() {
+        return userPrivilege;
+    }
+
+    public void setUserPrivilege(UserPrivilege userPrivilege) {
+        this.userPrivilege = userPrivilege;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Timestamp getLastAccess() {
+        return lastAccess;
+    }
+
+    public void setLastAccess(Timestamp lastAccess) {
+        this.lastAccess = lastAccess;
+    }
+
+    public Timestamp getLastPasswordChange() {
+        return lastPasswordChange;
+    }
+
+    public void setLastPasswordChange(Timestamp lastPasswordChange) {
+        this.lastPasswordChange = lastPasswordChange;
+    }
     
 
     @Override
