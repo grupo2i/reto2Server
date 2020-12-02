@@ -20,6 +20,7 @@ import javax.persistence.Table;
 @DiscriminatorValue("CLUB")
 @Table(name="club", schema="reto2G2i")
 public class Club extends User implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String location;
     private String phoneNum;
     

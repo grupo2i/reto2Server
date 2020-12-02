@@ -22,6 +22,7 @@ import javax.persistence.Table;
 @DiscriminatorValue("CLIENT")
 @Table(name="client", schema="reto2G2i")
 public class Client extends User implements Serializable {
+    private static final long serialVersionUID = 1L;
     @ManyToMany
     private Set<Event> events;
     @OneToMany(cascade=CascadeType.ALL)
