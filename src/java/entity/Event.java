@@ -15,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 /**
@@ -22,17 +24,20 @@ import javax.persistence.Temporal;
  * @author Matteo Fernández
  */
 @Entity
-@SuppressWarnings("ValidAttributes")
+@Table(name = "event", schema = "reto2G2i")
 public class Event implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date date;
     private String place;
     private Float ticketprice;
     private String description;
+
     private enum musicGenre {
         ROCK, POP, REGGAE, EDM, TRAP, RAP, INDIE, REGGAETON, OTHER;
 
@@ -72,12 +77,13 @@ public class Event implements Serializable {
             return OTHER;
         }
     }
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Client> clients;
+    @MapsId("clubId")
     @ManyToOne
     private Set<Club> clubs;
-    
-    public void setId(Long id) {
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -97,7 +103,7 @@ public class Event implements Serializable {
         this.description = description;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
