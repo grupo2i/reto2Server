@@ -17,8 +17,8 @@ import javax.persistence.Table;
  * @author Martin Angulo <martin.angulo at tartanga.eus>
  */
 @Entity
-@DiscriminatorValue("Club")
-@Table(name="clubs")
+@DiscriminatorValue("CLUB")
+@Table(name="club", schema="reto2G2i")
 public class Club extends User implements Serializable {
     private String location;
     private String phoneNum;

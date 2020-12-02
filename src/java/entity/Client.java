@@ -19,8 +19,8 @@ import javax.persistence.Table;
  * @author Martin Angulo <martin.angulo at tartanga.eus>
  */
 @Entity
-@DiscriminatorValue("Client")
-@Table(name="clients")
+@DiscriminatorValue("CLIENT")
+@Table(name="client", schema="reto2G2i")
 public class Client extends User implements Serializable {
     @ManyToMany
     private Set<Event> events;
