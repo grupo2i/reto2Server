@@ -7,20 +7,23 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Set;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author Martin Angulo <martin.angulo at tartanga.eus>
  */
 @Entity
+@DiscriminatorValue("Club")
+@Table(name="clubs")
 public class Club extends User implements Serializable {
     private String location;
     private String phoneNum;
     
-    @ManyToMany(fetch=FetchType.EAGER)
+    @OneToMany
     private Set<Event> events;
 
     /**

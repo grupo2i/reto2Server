@@ -8,18 +8,21 @@ package entity;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author Martin Angulo <martin.angulo at tartanga.eus>
  */
 @Entity
+@DiscriminatorValue("Client")
+@Table(name="clients")
 public class Client extends User implements Serializable {
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany
     private Set<Event> events;
     @OneToMany(cascade=CascadeType.ALL)
     private Set<Rating> ratings;
