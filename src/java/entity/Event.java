@@ -40,42 +40,6 @@ public class Event implements Serializable {
 
     private enum musicGenre {
         ROCK, POP, REGGAE, EDM, TRAP, RAP, INDIE, REGGAETON, OTHER;
-
-        public static musicGenre getROCK() {
-            return ROCK;
-        }
-
-        public static musicGenre getPOP() {
-            return POP;
-        }
-
-        public static musicGenre getREGGAE() {
-            return REGGAE;
-        }
-
-        public static musicGenre getEDM() {
-            return EDM;
-        }
-
-        public static musicGenre getTRAP() {
-            return TRAP;
-        }
-
-        public static musicGenre getRAP() {
-            return RAP;
-        }
-
-        public static musicGenre getINDIE() {
-            return INDIE;
-        }
-
-        public static musicGenre getREGGAETON() {
-            return REGGAETON;
-        }
-
-        public static musicGenre getOTHER() {
-            return OTHER;
-        }
     }
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Client> clients;
