@@ -2,31 +2,37 @@ package entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
- *
- * @author aitor
+ * Superclass of all type of users, contains common attributes.
+ * @author Aitor Fidalgo
  */
-@Entity
+@MappedSuperclass
 @Inheritance(strategy=InheritanceType.JOINED)
-@DiscriminatorColumn(name="userPrivilege")
 @Table(name="user", schema="reto2G2i")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * Defines the status of Users.
+     */
     public enum UserStatus{
         ENABLED,
         DISABLED
     }
+    /**
+     * Defines all types of Users.
+     */
     public enum UserPrivilege{
         ADMIN,
         CLIENT,
@@ -34,29 +40,60 @@ public class User implements Serializable {
         ARTIST
     }
     
+    /**
+     * Used to identify Users.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     
+    /**
+     * Unique name of the User in the system.
+     */
     @NotNull
     private String login;
+    /**
+     * Email of the User.
+     */
     @NotNull
     @Pattern(regexp="^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*"
             + "(\\.[A-Za-z]{2,})$")
     private String email;
+    /**
+     * Full and real name of the User.
+     */
     @NotNull
     private String fullName;
+    /**
+     * Brief description the Users writes about themselves.
+     */
     @NotNull
     private String biography;
-    
+    /**
+     * Two possible value enum that defines the Users status.
+     */
     @NotNull
+    @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
+    /**
+     * Enum that defines the type of User.
+     */
     @NotNull
+    @Enumerated(EnumType.STRING)
     private UserPrivilege userPrivilege;
+    /**
+     * Credential of the User.
+     */
     @NotNull
     private String password;
+    /**
+     * Specifies the last time the User loged in into the system.
+     */
     @NotNull
     private Timestamp lastAccess;
+    /**
+     * Specifies the last time the User chaged their password.
+     */
     @NotNull
     private Timestamp lastPasswordChange;
 

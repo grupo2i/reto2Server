@@ -17,37 +17,60 @@ import javax.persistence.Table;
 @Table(name="rate", schema="reto2G2i")
 public class Rate implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+    /**
+     * Compound id used to identify the rating.
+     */
     @EmbeddedId
     private RateId rateId;
+    /**
+     * User that rated the Event.
+     */
     @MapsId("userId")
     @ManyToOne
     private User user;
+    /**
+     * Event that has been rated.
+     */
     @MapsId("eventId")
     @ManyToOne
     private Event event;
 
-    
+    /**
+     * @return id of the event.
+     */
     public RateId getId() {
         return rateId;
     }
-
+    /**
+     * Sets the id of the rating.
+     * @param rateId value to be set.
+     */
     public void setId(RateId rateId) {
         this.rateId = rateId;
     }
-    
+    /**
+     * @return The User that made the rating.
+     */
     public User getUser() {
         return user;
     }
-
+    /**
+     * Sets the User that made the rating.
+     * @param user User that rated the Event.
+     */
     public void setUser(User user) {
         this.user = user;
     }
-
+    /**
+     * @return The Event that has been rated.
+     */
     public Event getEvent() {
         return event;
     }
-
+    /**
+     * Sets the Event that has been rated.
+     * @param event Event that has been rated.
+     */
     public void setEvent(Event event) {
         this.event = event;
     }
