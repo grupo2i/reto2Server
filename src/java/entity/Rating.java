@@ -14,7 +14,7 @@ import javax.persistence.Table;
  * @author Aitor Fidalgo
  */
 @Entity
-@Table(name="rate", schema="reto2G2i")
+@Table(name="rating", schema="reto2G2i")
 public class Rating implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
