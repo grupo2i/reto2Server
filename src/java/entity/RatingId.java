@@ -11,7 +11,7 @@ import javax.persistence.Embeddable;
  * @author Aitor Fidalgo
  */
 @Embeddable
-public class RateId implements Serializable{
+public class RatingId implements Serializable{
     /**
      * Id of the User that made the Rating.
      */
@@ -24,14 +24,14 @@ public class RateId implements Serializable{
     /**
      * Empty constructor.
      */
-    public RateId(){
+    public RatingId(){
     }
     /**
      * Constructor that sets the values sent as parameters.
      * @param userId Users id.
      * @param eventId Events id.
      */
-    public RateId(Integer userId, Integer eventId){
+    public RatingId(Integer userId, Integer eventId){
         this.userId = userId;
         this.eventId = eventId;
     }
