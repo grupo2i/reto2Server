@@ -24,15 +24,10 @@ import javax.persistence.Table;
 public class Artist extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private ArrayList<String> discography = new ArrayList<String>();
     private ArrayList<String> socialNetworks = new ArrayList<String>();
     private Set<MusicGenre> musicGenres;
     @ManyToMany
     private Set<Event> events;
-
-    public void setDiscography(ArrayList<String> discography) {
-        this.discography = discography;
-    }
 
     public void setSocialNetworks(ArrayList<String> socialNetworks) {
         this.socialNetworks = socialNetworks;
@@ -44,10 +39,6 @@ public class Artist extends User implements Serializable {
 
     public void setEvents(Set<Event> events) {
         this.events = events;
-    }
-
-    public ArrayList<String> getDiscography() {
-        return discography;
     }
 
     public ArrayList<String> getSocialNetworks() {
