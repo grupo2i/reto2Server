@@ -21,7 +21,7 @@ public class Rating implements Serializable {
      * Compound id used to identify the rating.
      */
     @EmbeddedId
-    private RatingId rateId;
+    private RatingId ratingId;
     /**
      * User that rated the Event.
      */
@@ -39,14 +39,14 @@ public class Rating implements Serializable {
      * @return id of the event.
      */
     public RatingId getId() {
-        return rateId;
+        return ratingId;
     }
     /**
      * Sets the id of the rating.
-     * @param rateId value to be set.
+     * @param ratingId value to be set.
      */
-    public void setId(RatingId rateId) {
-        this.rateId = rateId;
+    public void setId(RatingId ratingId) {
+        this.ratingId = ratingId;
     }
     /**
      * @return The User that made the rating.
@@ -79,18 +79,18 @@ public class Rating implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (rateId != null ? rateId.hashCode() : 0);
+        hash += (ratingId != null ? ratingId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the rateId fields are not set
+        // TODO: Warning - this method won't work in the case the ratingId fields are not set
         if (!(object instanceof Rating)) {
             return false;
         }
         Rating other = (Rating) object;
-        if ((this.rateId == null && other.rateId != null) || (this.rateId != null && !this.rateId.equals(other.rateId))) {
+        if ((this.ratingId == null && other.ratingId != null) || (this.ratingId != null && !this.ratingId.equals(other.ratingId))) {
             return false;
         }
         return true;
@@ -98,7 +98,7 @@ public class Rating implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Rate[ id=" + rateId + " ]";
+        return "entity.Rating[ id=" + ratingId + " ]";
     }
     
 }

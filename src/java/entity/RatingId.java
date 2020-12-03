@@ -5,7 +5,7 @@ import javax.persistence.Embeddable;
 
 /**
  * Compound id for Rates form by a User and an Events id.
- * @see Rate
+ * @see Rating
  * @see User
  * @see Event
  * @author Aitor Fidalgo
