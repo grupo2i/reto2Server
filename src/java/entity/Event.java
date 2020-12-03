@@ -38,14 +38,37 @@ public class Event implements Serializable {
     private Float ticketprice;
     private String description;
 
-    private enum musicGenre {
-        ROCK, POP, REGGAE, EDM, TRAP, RAP, INDIE, REGGAETON, OTHER;
-    }
+    private Set<MusicGenre> musicGenres;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Client> clients;
     @MapsId("clubId")
     @ManyToOne
     private Set<Club> clubs;
+
+    public void setMusicGenres(Set<MusicGenre> musicGenres) {
+        this.musicGenres = musicGenres;
+    }
+
+    public void setClients(Set<Client> clients) {
+        this.clients = clients;
+    }
+
+    public void setClubs(Set<Club> clubs) {
+        this.clubs = clubs;
+    }
+
+    public Set<MusicGenre> getMusicGenres() {
+        return musicGenres;
+    }
+
+    public Set<Client> getClients() {
+        return clients;
+    }
+
+    public Set<Club> getClubs() {
+        return clubs;
+    }
 
     public void setId(Integer id) {
         this.id = id;
