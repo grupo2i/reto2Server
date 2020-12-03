@@ -14,14 +14,14 @@ import javax.persistence.Table;
  * @author Aitor Fidalgo
  */
 @Entity
-@Table(name="rate", schema="reto2G2i")
+@Table(name="rating", schema="reto2G2i")
 public class Rating implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * Compound id used to identify the rating.
      */
     @EmbeddedId
-    private RateId rateId;
+    private RatingId rateId;
     /**
      * User that rated the Event.
      */
@@ -38,14 +38,14 @@ public class Rating implements Serializable {
     /**
      * @return id of the event.
      */
-    public RateId getId() {
+    public RatingId getId() {
         return rateId;
     }
     /**
      * Sets the id of the rating.
      * @param rateId value to be set.
      */
-    public void setId(RateId rateId) {
+    public void setId(RatingId rateId) {
         this.rateId = rateId;
     }
     /**
