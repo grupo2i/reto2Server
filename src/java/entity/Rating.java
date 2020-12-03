@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="rate", schema="reto2G2i")
-public class Rate implements Serializable {
+public class Rating implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * Compound id used to identify the rating.
@@ -86,10 +86,10 @@ public class Rate implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the rateId fields are not set
-        if (!(object instanceof Rate)) {
+        if (!(object instanceof Rating)) {
             return false;
         }
-        Rate other = (Rate) object;
+        Rating other = (Rating) object;
         if ((this.rateId == null && other.rateId != null) || (this.rateId != null && !this.rateId.equals(other.rateId))) {
             return false;
         }
