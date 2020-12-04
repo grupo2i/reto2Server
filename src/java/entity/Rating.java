@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * Contains a Clients evaluation of an Event.
@@ -34,6 +35,15 @@ public class Rating implements Serializable {
     @MapsId("eventId")
     @ManyToOne
     private Event event;
+    /**
+     * Brief commentary about an Event made by a User.
+     */
+    private String comment;
+    /**
+     * Numeric evaluation of an Event made by a User.
+     */
+    @NotNull
+    private Integer rating;
 
     /**
      * @return id of the event.
@@ -74,8 +84,34 @@ public class Rating implements Serializable {
     public void setEvent(Event event) {
         this.event = event;
     }
+    /**
+     * @return The comment made by the User.
+     */
+    public String getComment() {
+        return comment;
+    }
+    /**
+     * Sets the value of the comment.
+     * @param comment The comment made by the User.
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    /**
+     * @return The numeric evaluation made by the User.
+     */
+    public Integer getRating() {
+        return rating;
+    }
+    /**
+     * Sets the value of the numeric rating.
+     * @param rating Numeric rating made by the User.
+     */
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
     
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
