@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 /**
  * Class Artist extends from user
- * @author 2dam
+ * @author Ander, Matteo
  */
 @Entity
 @Table(name="artist", schema="reto2G2i")
@@ -59,7 +59,6 @@ public class Artist extends User implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Artist)) {
             return false;
         }
