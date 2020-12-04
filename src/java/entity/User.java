@@ -45,7 +45,7 @@ public class User implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    protected Integer id;
     
     /**
      * Unique name of the User in the system.
