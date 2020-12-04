@@ -38,10 +38,10 @@ public class Event implements Serializable {
     private Set<MusicGenre> musicGenres;
     private Club clubs;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy="events")
     private Set<Artist> artists;
     
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy="events")
     private Set<Client> clients;
 
     public Integer getId() {
