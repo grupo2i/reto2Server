@@ -10,7 +10,8 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
 
 /**
  *
@@ -23,8 +24,7 @@ public class Club extends User implements Serializable {
     private String location;
     private String phoneNum;
     
-    @OneToMany
-    @JoinColumn(name="clubId")
+    @OneToMany(mappedBy = "event", fetch = FetchType.ANY, cascade = CascadeType.ALL)
     private Set<Event> events;
 
     /**
