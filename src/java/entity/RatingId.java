@@ -15,7 +15,7 @@ public class RatingId implements Serializable{
     /**
      * Id of the User that made the Rating.
      */
-    private Integer userId;
+    private Integer clientId;
     /**
      * Id of the Event that has been rated.
      */
@@ -32,7 +32,7 @@ public class RatingId implements Serializable{
      * @param eventId Events id.
      */
     public RatingId(Integer userId, Integer eventId){
-        this.userId = userId;
+        this.clientId = userId;
         this.eventId = eventId;
     }
 
@@ -40,14 +40,14 @@ public class RatingId implements Serializable{
      * @return The id of the User that made the rating.
      */
     public Integer getUserId() {
-        return userId;
+        return clientId;
     }
     /**
      * Sets the id of the User.
      * @param userId Id of the User.
      */
     public void setUserId(Integer userId) {
-        this.userId = userId;
+        this.clientId = userId;
     }
     /**
      * @return The id of the Eventthat has beenrated.

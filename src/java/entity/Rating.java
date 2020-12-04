@@ -26,9 +26,9 @@ public class Rating implements Serializable {
     /**
      * User that rated the Event.
      */
-    @MapsId("userId")
+    @MapsId("clientId")
     @ManyToOne
-    private User user;
+    private Client client;
     /**
      * Event that has been rated.
      */
@@ -61,15 +61,15 @@ public class Rating implements Serializable {
     /**
      * @return The User that made the rating.
      */
-    public User getUser() {
-        return user;
+    public Client getClient() {
+        return client;
     }
     /**
      * Sets the User that made the rating.
-     * @param user User that rated the Event.
+     * @param client User that rated the Event.
      */
-    public void setUser(User user) {
-        this.user = user;
+    public void setClient(Client client) {
+        this.client = client;
     }
     /**
      * @return The Event that has been rated.

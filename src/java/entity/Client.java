@@ -28,7 +28,7 @@ public class Client extends User implements Serializable {
             @JoinColumn(name="clientId", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "eventId", referencedColumnName="id"))
     private Set<Event> events;
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="client")
     private Set<Rating> ratings;
 
     /**
