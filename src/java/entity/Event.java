@@ -35,10 +35,12 @@ public class Event implements Serializable {
     private String place;
     private Float ticketprice;
     private String description;
-    private Set<Artist> artists;
     private Set<MusicGenre> musicGenres;
     private Club clubs;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Artist> artists;
+    
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Client> clients;
 
