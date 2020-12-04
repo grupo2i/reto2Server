@@ -42,33 +42,36 @@ public class Event implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Client> clients;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public Float getTicketprice() {
+        return ticketprice;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public Set<Artist> getArtists() {
         return artists;
     }
 
-    public Club getClubs() {
-        return clubs;
-    }
-
-    public void setArtists(Set<Artist> artists) {
-        this.artists = artists;
-    }
-
-    public void setClubs(Club clubs) {
-        this.clubs = clubs;
-    }
-   
-
-    public void setMusicGenres(Set<MusicGenre> musicGenres) {
-        this.musicGenres = musicGenres;
-    }
-
-    public void setClients(Set<Client> clients) {
-        this.clients = clients;
-    }
-
     public Set<MusicGenre> getMusicGenres() {
         return musicGenres;
+    }
+
+    public Club getClubs() {
+        return clubs;
     }
 
     public Set<Client> getClients() {
@@ -95,24 +98,20 @@ public class Event implements Serializable {
         this.description = description;
     }
 
-    public Integer getId() {
-        return id;
+    public void setArtists(Set<Artist> artists) {
+        this.artists = artists;
     }
 
-    public Date getDate() {
-        return date;
+    public void setMusicGenres(Set<MusicGenre> musicGenres) {
+        this.musicGenres = musicGenres;
     }
 
-    public String getPlace() {
-        return place;
+    public void setClubs(Club clubs) {
+        this.clubs = clubs;
     }
 
-    public Float getTicketprice() {
-        return ticketprice;
-    }
-
-    public String getDescription() {
-        return description;
+    public void setClients(Set<Client> clients) {
+        this.clients = clients;
     }
 
 }
