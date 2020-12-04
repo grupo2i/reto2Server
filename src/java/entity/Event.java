@@ -8,12 +8,14 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -36,13 +38,17 @@ public class Event implements Serializable {
     private Float ticketprice;
     private String description;
     private Set<MusicGenre> musicGenres;
-    private Club clubs;
+    @ManyToOne
+    private Club club;
 
     @ManyToMany(mappedBy="events")
     private Set<Artist> artists;
     
     @ManyToMany(mappedBy="events")
     private Set<Client> clients;
+    
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="event")
+    private Set<Rating> ratings;
 
     public Integer getId() {
         return id;
@@ -73,7 +79,7 @@ public class Event implements Serializable {
     }
 
     public Club getClubs() {
-        return clubs;
+        return club;
     }
 
     public Set<Client> getClients() {
@@ -108,8 +114,8 @@ public class Event implements Serializable {
         this.musicGenres = musicGenres;
     }
 
-    public void setClubs(Club clubs) {
-        this.clubs = clubs;
+    public void setClubs(Club club) {
+        this.club = club;
     }
 
     public void setClients(Set<Client> clients) {
