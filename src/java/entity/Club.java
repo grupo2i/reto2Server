@@ -7,7 +7,6 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,7 +16,6 @@ import javax.persistence.Table;
  * @author Martin Angulo <martin.angulo at tartanga.eus>
  */
 @Entity
-@DiscriminatorValue("CLUB")
 @Table(name="club", schema="reto2G2i")
 public class Club extends User implements Serializable {
     private static final long serialVersionUID = 1L;

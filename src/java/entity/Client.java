@@ -8,22 +8,25 @@ package entity;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 
 /**
  *
  * @author Martin Angulo <martin.angulo at tartanga.eus>
  */
 @Entity
-@DiscriminatorValue("CLIENT")
 @Table(name="client", schema="reto2G2i")
 public class Client extends User implements Serializable {
     private static final long serialVersionUID = 1L;
     @ManyToMany
+    @JoinTable(name="client_event", schema="reto2G2i", joinColumns = 
+            @JoinColumn(name="clientId", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "eventId", referencedColumnName="id"))
     private Set<Event> events;
     @OneToMany(cascade=CascadeType.ALL)
     private Set<Rating> ratings;
