@@ -24,7 +24,7 @@ public class Club extends User implements Serializable {
     private String location;
     private String phoneNum;
     
-    @OneToMany(mappedBy = "event", fetch = FetchType.ANY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Event> events;
 
     /**
