@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -12,6 +7,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -19,6 +16,7 @@ import javax.persistence.CascadeType;
  */
 @Entity
 @Table(name="club", schema="reto2G2i")
+@XmlRootElement
 public class Club extends User implements Serializable {
     private static final long serialVersionUID = 1L;
     private String location;
@@ -58,6 +56,7 @@ public class Club extends User implements Serializable {
     /**
      * @return the events
      */
+    @XmlTransient
     public Set<Event> getEvents() {
         return events;
     }

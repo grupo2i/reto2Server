@@ -39,14 +39,14 @@ public class RatingId implements Serializable{
     /**
      * @return The id of the User that made the rating.
      */
-    public Integer getUserId() {
+    public Integer getClientId() {
         return clientId;
     }
     /**
      * Sets the id of the User.
      * @param userId Id of the User.
      */
-    public void setUserId(Integer userId) {
+    public void setClientId(Integer userId) {
         this.clientId = userId;
     }
     /**

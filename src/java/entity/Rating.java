@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Contains a Clients evaluation of an Event.
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name="rating", schema="reto2G2i")
+@XmlRootElement
 public class Rating implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
