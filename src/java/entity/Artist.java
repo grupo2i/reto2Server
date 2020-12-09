@@ -2,11 +2,14 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Set;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Class Artist extends from user
@@ -14,9 +17,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="artist", schema="reto2G2i")
+@XmlRootElement
 public class Artist extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @ElementCollection
     private Set<String> socialNetworks;
     private MusicGenre musicGenre;
     @ManyToMany
@@ -47,6 +52,7 @@ public class Artist extends User implements Serializable {
         return musicGenre;
     }
 
+    @XmlTransient
     public Set<Event> getEvents() {
         return events;
     }
