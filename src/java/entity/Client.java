@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinTable;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -13,6 +15,17 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Martin Angulo
  */
+@NamedQueries({
+    @NamedQuery(
+            name = "getEventsByClientId", 
+            query = "SELECT e FROM Event e JOIN e.clients cli WHERE cli.id=:clientId"
+           
+    ),
+    @NamedQuery(
+            name = "getAllClients", query = "SELECT c FROM Client c"
+            ),
+    
+})
 @Entity
 @Table(name="client", schema="reto2G2i")
 @XmlRootElement

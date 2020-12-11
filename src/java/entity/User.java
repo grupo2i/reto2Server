@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -22,6 +24,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Superclass of all type of users, contains common attributes.
  * @author Aitor Fidalgo
  */
+@NamedQueries({
+    @NamedQuery(
+            name = "signIn", 
+            query = "SELECT us FROM User us WHERE us.login like :login AND us.password like :password"
+            ),
+    @NamedQuery(
+            name="selectAllUsers",
+            query= "SELECT us from User us"
+    )
+    
+})
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 @Table(name="user", schema="reto2G2i")
