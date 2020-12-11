@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Contains a Clients evaluation of an Event.
+ * @see User
  * @see Client
  * @see Event
  * @author Aitor Fidalgo
@@ -27,10 +28,16 @@ public class Rating implements Serializable {
     private RatingId ratingId;
     /**
      * User that rated the Event.
+     * 
+     * The attribute is of the superclass type User because the subclass Client
+     * does not have an id annotation and so is not a valid mapping and
+     * an exception is thrown when deploying.
+     * 
+     * See more <a href="https://discourse.hibernate.org/t/embededid-containing-a-foreign-key-of-an-entity-with-inheritance/2334">here</a> 
      */
     @MapsId("clientId")
     @ManyToOne
-    private Client client;
+    private User client;
     /**
      * Event that has been rated.
      */
@@ -63,14 +70,14 @@ public class Rating implements Serializable {
     /**
      * @return The User that made the rating.
      */
-    public Client getClient() {
+    public User getClient() {
         return client;
     }
     /**
      * Sets the User that made the rating.
      * @param client User that rated the Event.
      */
-    public void setClient(Client client) {
+    public void setClient(User client) {
         this.client = client;
     }
     /**

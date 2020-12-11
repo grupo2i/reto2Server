@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
         resources.add(service.ClubFacadeREST.class);
         resources.add(service.EventFacadeREST.class);
         resources.add(service.RatingFacadeREST.class);
+        resources.add(service.UserFacadeREST.class);
     }
     
 }
