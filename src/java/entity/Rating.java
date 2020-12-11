@@ -5,21 +5,35 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Contains a Clients evaluation of an Event.
+ *
  * @see User
  * @see Client
  * @see Event
  * @author Aitor Fidalgo
  */
+@NamedQueries({
+    @NamedQuery(
+            name = "selectAllRatingsByUserId",
+            query = "SELECT ra FROM Rating ra WHERE ra.ratingId.clientId=:clientId"
+    )
+    , @NamedQuery(
+            name = "selectAllRatingsByEventId",
+            query = "SELECT ra FROM Rating ra WHERE ra.ratingId.eventId=:eventId"
+    )
+})
 @Entity
-@Table(name="rating", schema="reto2G2i")
+@Table(name = "rating", schema = "reto2G2i")
 @XmlRootElement
 public class Rating implements Serializable {
+
     private static final long serialVersionUID = 1L;
     /**
      * Compound id used to identify the rating.
@@ -28,12 +42,13 @@ public class Rating implements Serializable {
     private RatingId ratingId;
     /**
      * User that rated the Event.
-     * 
+     *
      * The attribute is of the superclass type User because the subclass Client
-     * does not have an id annotation and so is not a valid mapping and
-     * an exception is thrown when deploying.
-     * 
-     * See more <a href="https://discourse.hibernate.org/t/embededid-containing-a-foreign-key-of-an-entity-with-inheritance/2334">here</a> 
+     * does not have an id annotation and so is not a valid mapping and an
+     * exception is thrown when deploying.
+     *
+     * See more
+     * <a href="https://discourse.hibernate.org/t/embededid-containing-a-foreign-key-of-an-entity-with-inheritance/2334">here</a>
      */
     @MapsId("clientId")
     @ManyToOne
@@ -60,67 +75,80 @@ public class Rating implements Serializable {
     public RatingId getId() {
         return ratingId;
     }
+
     /**
      * Sets the id of the rating.
+     *
      * @param ratingId value to be set.
      */
     public void setId(RatingId ratingId) {
         this.ratingId = ratingId;
     }
+
     /**
      * @return The User that made the rating.
      */
     public User getClient() {
         return client;
     }
+
     /**
      * Sets the User that made the rating.
+     *
      * @param client User that rated the Event.
      */
     public void setClient(User client) {
         this.client = client;
     }
+
     /**
      * @return The Event that has been rated.
      */
     public Event getEvent() {
         return event;
     }
+
     /**
      * Sets the Event that has been rated.
+     *
      * @param event Event that has been rated.
      */
     public void setEvent(Event event) {
         this.event = event;
     }
+
     /**
      * @return The comment made by the User.
      */
     public String getComment() {
         return comment;
     }
+
     /**
      * Sets the value of the comment.
+     *
      * @param comment The comment made by the User.
      */
     public void setComment(String comment) {
         this.comment = comment;
     }
+
     /**
      * @return The numeric evaluation made by the User.
      */
     public Integer getRating() {
         return rating;
     }
+
     /**
      * Sets the value of the numeric rating.
+     *
      * @param rating Numeric rating made by the User.
      */
     public void setRating(Integer rating) {
         this.rating = rating;
     }
-    
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -145,5 +173,5 @@ public class Rating implements Serializable {
     public String toString() {
         return "entity.Rating[ id=" + ratingId + " ]";
     }
-    
+
 }

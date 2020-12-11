@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -20,6 +22,12 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Matteo Fernández
  */
+@NamedQueries({
+    @NamedQuery(
+            name = "selectAllEvents", 
+            query = "SELECT ev FROM Event ev"
+    ) 
+})
 @Entity
 @Table(name = "event", schema = "reto2G2i")
 @XmlRootElement
