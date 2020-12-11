@@ -28,9 +28,6 @@ public class Artist extends User implements Serializable {
     @ManyToOne
     private MusicGenreEntity musicGenre;
     @ManyToMany
-    /*@JoinTable(name="artist_event", schema="reto2G2i", joinColumns = 
-            @JoinColumn(name="artistId", referencedColumnName="id"),
-            inverseJoinColumns = @JoinColumn(name = "eventId", referencedColumnName="id"))*/
     @JoinTable(name="artist_event", schema="reto2G2i")
     private Set<Event> events;
 

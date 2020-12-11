@@ -11,7 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- *
+ * Entity that stores all music genres related to Artists.
+ * @see Artist
  * @author Aitor Fidalgo
  */
 @Entity

@@ -2,10 +2,8 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinTable;
 import javax.xml.bind.annotation.XmlRootElement;
