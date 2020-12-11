@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,8 +35,6 @@ public class Event implements Serializable {
     private String place;
     private Float ticketprice;
     private String description;
-    @ElementCollection
-    private Set<MusicGenre> musicGenres;
     @ManyToOne
     private Club club;
 
@@ -75,10 +72,6 @@ public class Event implements Serializable {
         return artists;
     }
 
-    public Set<MusicGenre> getMusicGenres() {
-        return musicGenres;
-    }
-
     public Club getClubs() {
         return club;
     }
@@ -110,10 +103,6 @@ public class Event implements Serializable {
 
     public void setArtists(Set<Artist> artists) {
         this.artists = artists;
-    }
-
-    public void setMusicGenres(Set<MusicGenre> musicGenres) {
-        this.musicGenres = musicGenres;
     }
 
     public void setClubs(Club club) {

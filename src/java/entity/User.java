@@ -2,6 +2,9 @@ package entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -9,36 +12,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Superclass of all type of users, contains common attributes.
  * @author Aitor Fidalgo
  */
-@MappedSuperclass
+@Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 @Table(name="user", schema="reto2G2i")
+@XmlRootElement
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
-    /**
-     * Defines the status of Users.
-     */
-    public enum UserStatus{
-        ENABLED,
-        DISABLED
-    }
-    /**
-     * Defines all types of Users.
-     */
-    public enum UserPrivilege{
-        ADMIN,
-        CLIENT,
-        CLUB,
-        ARTIST
-    }
     
     /**
      * Used to identify Users.
@@ -96,7 +85,15 @@ public class User implements Serializable {
      */
     @NotNull
     private Timestamp lastPasswordChange;
-
+    
+    /**
+     * Ratings of an event made by a User.
+     * 
+     * The relation was supposed to be between Client and Rating but due to an
+     * Hibernate bug it can't be done. See more <a href="https://discourse.hibernate.org/t/embededid-containing-a-foreign-key-of-an-entity-with-inheritance/2334">here</a>
+     */
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="client")
+    private Set<Rating> ratings;
     
     public Integer getId() {
         return id;

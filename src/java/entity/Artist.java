@@ -2,11 +2,12 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -21,21 +22,24 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Artist extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @ElementCollection
-    private Set<String> socialNetworks;
-    private MusicGenre musicGenre;
+    @OneToMany(mappedBy="artist")
+    private Set<SocialNetwork> socialNetworks;
+    @Enumerated
+    @ManyToOne
+    private MusicGenreEntity musicGenre;
     @ManyToMany
-    @JoinTable(name="artist_event", schema="reto2G2i", joinColumns = 
+    /*@JoinTable(name="artist_event", schema="reto2G2i", joinColumns = 
             @JoinColumn(name="artistId", referencedColumnName="id"),
-            inverseJoinColumns = @JoinColumn(name = "eventId", referencedColumnName="id"))
+            inverseJoinColumns = @JoinColumn(name = "eventId", referencedColumnName="id"))*/
+    @JoinTable(name="artist_event", schema="reto2G2i")
     private Set<Event> events;
 
 
-    public void setSocialNetworks(Set<String> socialNetworks) {
+    public void setSocialNetworks(Set<SocialNetwork> socialNetworks) {
         this.socialNetworks = socialNetworks;
     }
 
-    public void setMusicGenres(MusicGenre musicGenre) {
+    public void setMusicGenres(MusicGenreEntity musicGenre) {
         this.musicGenre = musicGenre;
     }
 
@@ -44,11 +48,11 @@ public class Artist extends User implements Serializable {
     }
 
 
-    public Set<String> getSocialNetworks() {
+    public Set<SocialNetwork> getSocialNetworks() {
         return socialNetworks;
     }
 
-    public MusicGenre getMusicGenre() {
+    public MusicGenreEntity getMusicGenre() {
         return musicGenre;
     }
 

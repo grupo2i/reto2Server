@@ -28,11 +28,11 @@ public class RatingId implements Serializable{
     }
     /**
      * Constructor that sets the values sent as parameters.
-     * @param userId Users id.
+     * @param clientId Users id.
      * @param eventId Events id.
      */
-    public RatingId(Integer userId, Integer eventId){
-        this.clientId = userId;
+    public RatingId(Integer clientId, Integer eventId){
+        this.clientId = clientId;
         this.eventId = eventId;
     }
 

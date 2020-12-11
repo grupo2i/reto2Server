@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Martin Angulo <martin.angulo at tartanga.eus>
+ * @author Martin Angulo
  */
 @Entity
 @Table(name="club", schema="reto2G2i")
