@@ -66,8 +66,6 @@ public class SocialNetwork implements Serializable {
         }
         SocialNetwork other = (SocialNetwork) object;
          return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
-        }
-        return true;
     }
 
     @Override
