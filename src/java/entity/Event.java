@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @NamedQueries({
     @NamedQuery(
-            name = "selectAllEvents", 
+            name = "getAllEvents", 
             query = "SELECT ev FROM Event ev"
     ) 
 })
