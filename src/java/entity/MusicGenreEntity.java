@@ -68,8 +68,8 @@ public class MusicGenreEntity implements Serializable {
             return false;
         }
         MusicGenreEntity other = (MusicGenreEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
+   
         }
         return true;
     }
