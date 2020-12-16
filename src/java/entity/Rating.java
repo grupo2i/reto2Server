@@ -164,8 +164,6 @@ public class Rating implements Serializable {
         }
         Rating other = (Rating) object;
         return !((this.ratingId == null && other.ratingId != null) || (this.ratingId != null && !this.ratingId.equals(other.ratingId)));
-        }
-        return true;
     }
 
     @Override
