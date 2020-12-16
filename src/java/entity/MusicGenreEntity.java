@@ -23,7 +23,7 @@ public class MusicGenreEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private MusicGenre musicGenre;
     @OneToMany(mappedBy="musicGenre")
     private Set<Artist> artists;
