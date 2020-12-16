@@ -70,8 +70,7 @@ public class Artist extends User implements Serializable {
             return false;
         }
         Artist other = (Artist) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
+         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
         }
         return true;
     }
