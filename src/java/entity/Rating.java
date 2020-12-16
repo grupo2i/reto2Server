@@ -163,9 +163,11 @@ public class Rating implements Serializable {
             return false;
         }
         Rating other = (Rating) object;
-        return !((this.ratingId == null && other.ratingId != null) || (this.ratingId != null && !this.ratingId.equals(other.ratingId)));
+        if ((this.ratingId == null && other.ratingId != null) || (this.ratingId != null && !this.ratingId.equals(other.ratingId))) {
+            return false;
+        }
+        return true;
     }
-
     @Override
     public String toString() {
         return "entity.Rating[ id=" + ratingId + " ]";
