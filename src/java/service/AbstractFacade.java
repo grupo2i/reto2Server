@@ -43,4 +43,8 @@ public abstract class AbstractFacade<T> {
     public List<Rating> getAllRatingsByEventId(Integer id) {
         return getEntityManager().createNamedQuery("getAllRatingsByEventId").setParameter("eventId", id).getResultList();
     }
+
+    public List<Event> getAllEvents() {
+        return getEntityManager().createNamedQuery("getAllEvents").getResultList();
+   }
 }
