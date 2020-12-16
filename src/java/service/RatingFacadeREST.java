@@ -2,6 +2,7 @@ package service;
 
 import entity.Rating;
 import entity.RatingId;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.PathSegment;
 
 /**
  *
- * @author aitor
+ * @author aitor & ander
  */
 @Stateless
 @Path("entity.rating")
@@ -79,6 +80,34 @@ public class RatingFacadeREST extends AbstractFacade<Rating> {
     public Rating find(@PathParam("id") PathSegment id) {
         entity.RatingId key = getPrimaryKey(id);
         return super.find(key);
+    }
+
+    /**
+     *
+     * @param id
+     * gets all the ratings a user has made by his id
+     * @return
+     */
+    @GET
+    @Path("getAllRatingsByUserId/{id}")
+    @Produces({MediaType.APPLICATION_XML})
+    @Override
+    public List<Rating> getAllRatingsByUserId(@PathParam("id") Integer id) {
+        return super.getAllRatingsByUserId(id);
+    }
+
+    /**
+     *
+     * @param id
+     * gets all the ratings an events has by it's id
+     * @return
+     */
+    @GET
+    @Path("getAllRatingsByEventId/{id}")
+    @Produces({MediaType.APPLICATION_XML})
+    @Override
+    public List<Rating> getAllRatingsByEventId(@PathParam("id") Integer id) {
+        return super.getAllRatingsByEventId(id);
     }
 
     @Override
