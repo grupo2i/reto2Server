@@ -65,9 +65,12 @@ public class SocialNetwork implements Serializable {
             return false;
         }
         SocialNetwork other = (SocialNetwork) object;
-         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
     }
-
+    
     @Override
     public String toString() {
         return "entity.SocialNetwork[ id=" + id + " ]";
