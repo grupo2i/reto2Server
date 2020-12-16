@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -27,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Artist extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @OneToMany(mappedBy="artist")
+    @OneToMany(mappedBy="artist", fetch = FetchType.EAGER)
     private Set<SocialNetwork> socialNetworks;
     @Enumerated
     @ManyToOne

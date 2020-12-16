@@ -3,13 +3,13 @@ package entity;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,14 +31,13 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Client extends User implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="client_event", schema="reto2G2i")
     private Set<Event> events;
 
     /**
      * @return the events
      */
-    @XmlTransient
     public Set<Event> getEvents() {
         return events;
     }

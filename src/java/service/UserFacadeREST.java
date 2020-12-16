@@ -69,7 +69,6 @@ public class UserFacadeREST extends AbstractFacade<User> {
         User user = null;
         //try{
             user = super.signIn(login, password);
-            user.setPassword("");
         //} catch (NotFoundException ex){
         //  BAD LOGIN
         //}

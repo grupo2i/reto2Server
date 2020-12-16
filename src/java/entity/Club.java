@@ -18,8 +18,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @NamedQueries({
     @NamedQuery(name = "getAllClubs", query = "SELECT c FROM Club c"),
-    @NamedQuery(name = "getClubsByName",
-            query = "SELECT c FROM Club c WHERE c.fullName LIKE '%"+":name"+"%'")
 })
 @Entity
 @Table(name="club", schema="reto2G2i")

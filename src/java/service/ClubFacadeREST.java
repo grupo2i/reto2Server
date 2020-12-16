@@ -67,14 +67,6 @@ public class ClubFacadeREST extends AbstractFacade<Club> {
     public List<Club> getAllClubs(){
         return super.getAllClubs();
     }
-    
-    @GET
-    @Path("getClubsByName/{name}")
-    @Produces({MediaType.APPLICATION_XML})
-    @Override
-    public List<Club> getClubsByName(@PathParam("name") String name){
-        return super.getClubsByName(name);
-    }
 
     @Override
     protected EntityManager getEntityManager() {

@@ -90,19 +90,5 @@ public abstract class AbstractFacade<T> {
                 .setParameter("login", login)
                 .setParameter("password", password)
                 .getSingleResult();
-    }
-    
-    public List<Event> getEventsByName(String name){
-        return getEntityManager()
-                .createNamedQuery("getEventsByName")
-                .setParameter("name", name)
-                .getResultList();
-    }
-    
-    public List<Club> getClubsByName(String name){
-        return getEntityManager()
-                .createNamedQuery("getClubsByName")
-                .setParameter("name", name)
-                .getResultList();
-    }
+    }    
 }

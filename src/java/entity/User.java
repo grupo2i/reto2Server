@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -100,8 +101,18 @@ public class User implements Serializable {
      * The relation was supposed to be between Client and Rating but due to an
      * Hibernate bug it can't be done. See more <a href="https://discourse.hibernate.org/t/embededid-containing-a-foreign-key-of-an-entity-with-inheritance/2334">here</a>
      */
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="client")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="client", fetch = FetchType.EAGER)
     private Set<Rating> ratings;
+
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
+    }
+    
+    
     
     public Integer getId() {
         return id;

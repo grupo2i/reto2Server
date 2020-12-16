@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,10 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "selectAllEvents", 
             query = "SELECT ev FROM Event ev"
-    ),
-    @NamedQuery(
-            name = "getEventsByName",
-            query = "SELECT ev From Event ev WHERE ev.name = '%"+":name"+"%'")
+    )
 })
 @Entity
 @Table(name = "event", schema = "reto2G2i")
@@ -50,13 +48,13 @@ public class Event implements Serializable {
     @ManyToOne
     private Club club;
 
-    @ManyToMany(mappedBy="events")
+    @ManyToMany(mappedBy="events", fetch = FetchType.EAGER)
     private Set<Artist> artists;
     
-    @ManyToMany(mappedBy="events")
+    @ManyToMany(mappedBy="events", fetch = FetchType.EAGER)
     private Set<Client> clients;
     
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="event")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="event", fetch = FetchType.EAGER)
     private Set<Rating> ratings;
 
     public Integer getId() {

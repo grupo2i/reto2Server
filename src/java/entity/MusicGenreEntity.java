@@ -3,6 +3,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +24,7 @@ public class MusicGenreEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private MusicGenre musicGenre;
     @OneToMany(mappedBy="musicGenre")
     private Set<Artist> artists;
