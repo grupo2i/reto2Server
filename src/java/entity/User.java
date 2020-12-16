@@ -202,10 +202,13 @@ public class User implements Serializable {
         if (!(object instanceof User)) {
             return false;
         }
-        User other = (User) object;
-        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
+         User other = (User) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
     }
-
+    
     @Override
     public String toString() {
         return "entity.User[ id=" + id + " ]";
