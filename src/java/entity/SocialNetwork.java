@@ -70,7 +70,7 @@ public class SocialNetwork implements Serializable {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
         return "entity.SocialNetwork[ id=" + id + " ]";

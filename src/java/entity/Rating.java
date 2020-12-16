@@ -21,11 +21,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @NamedQueries({
     @NamedQuery(
-            name = "selectAllRatingsByUserId",
+            name = "getAllRatingsByUserId",
             query = "SELECT ra FROM Rating ra WHERE ra.ratingId.clientId=:clientId"
     )
     , @NamedQuery(
-            name = "selectAllRatingsByEventId",
+            name = "getAllRatingsByEventId",
             query = "SELECT ra FROM Rating ra WHERE ra.ratingId.eventId=:eventId"
     )
 })
@@ -168,7 +168,6 @@ public class Rating implements Serializable {
         }
         return true;
     }
-
     @Override
     public String toString() {
         return "entity.Rating[ id=" + ratingId + " ]";

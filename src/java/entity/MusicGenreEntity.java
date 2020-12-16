@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -68,7 +69,7 @@ public class MusicGenreEntity implements Serializable {
         if (!(object instanceof MusicGenreEntity)) {
             return false;
         }
-        MusicGenreEntity other = (MusicGenreEntity) object;
+       MusicGenreEntity other = (MusicGenreEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

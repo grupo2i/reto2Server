@@ -5,6 +5,7 @@ import entity.Client;
 import entity.Club;
 import entity.Event;
 import entity.User;
+import entity.Rating;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.ws.rs.NotFoundException;
@@ -12,6 +13,7 @@ import javax.ws.rs.NotFoundException;
 /**
  *
  * @author aitor
+ * @param <T>
  */
 public abstract class AbstractFacade<T> {
 
@@ -77,6 +79,12 @@ public abstract class AbstractFacade<T> {
                 .createNamedQuery("getAllArtists")
                 .getResultList();
     }
+  
+    public List<Event> getAllEvents() {
+        return getEntityManager()
+          .createNamedQuery("getAllEvents")
+          .getResultList();
+    }
     /**
      * Looks for the User with the specified login and password.
      * @param login The login of the User signing in.
@@ -91,4 +99,19 @@ public abstract class AbstractFacade<T> {
                 .setParameter("password", password)
                 .getSingleResult();
     }    
+}
+
+    public List<Rating> getAllRatingsByUserId(Integer id) {
+        return getEntityManager()
+          .createNamedQuery("getAllRatingsByUserId")
+          .setParameter("clientId", id)
+          .getResultList();
+    }
+
+    public List<Rating> getAllRatingsByEventId(Integer id) {
+        return getEntityManager()
+          .createNamedQuery("getAllRatingsByEventId")
+          .setParameter("eventId", id)
+          .getResultList();
+    }
 }

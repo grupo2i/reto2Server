@@ -1,6 +1,7 @@
 package service;
 
 import entity.Event;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -54,6 +55,14 @@ public class EventFacadeREST extends AbstractFacade<Event> {
     @Produces({MediaType.APPLICATION_XML})
     public Event find(@PathParam("id") Integer id) {
         return super.find(id);
+    }
+
+    @GET
+    @Path("getAllEvents")
+    @Produces({MediaType.APPLICATION_XML})
+    @Override
+    public List<Event> getAllEvents() {
+        return super.getAllEvents();
     }
 
     @Override

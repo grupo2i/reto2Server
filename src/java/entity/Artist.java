@@ -75,13 +75,12 @@ public class Artist extends User implements Serializable {
         if (!(object instanceof Artist)) {
             return false;
         }
-        Artist other = (Artist) object;
+       Artist other = (Artist) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
-
     @Override
     public String toString() {
         return "entity.artista[ id=" + id + " ]";
