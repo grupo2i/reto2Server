@@ -28,12 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
             name = "signIn", 
             query = "SELECT us FROM User us WHERE us.login like :login AND us.password like :password"
-            ),
-    @NamedQuery(
-            name="selectAllUsers",
-            query= "SELECT us from User us"
-    )
-    
+            )
 })
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)

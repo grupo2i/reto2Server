@@ -1,6 +1,7 @@
 package service;
 
 import entity.Artist;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -54,6 +55,17 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
     @Produces({MediaType.APPLICATION_XML})
     public Artist find(@PathParam("id") Integer id) {
         return super.find(id);
+    }
+    /**
+     * Gets all the registered Artists.
+     * @return A list of Artists.
+     */
+    @GET
+    @Path("getAllArtists")
+    @Produces({MediaType.APPLICATION_XML})
+    @Override
+    public List<Artist> getAllArtists(){
+        return super.getAllArtists();
     }
 
     @Override

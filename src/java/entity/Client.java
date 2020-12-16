@@ -19,7 +19,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "getEventsByClientId", 
             query = "SELECT e FROM Event e JOIN e.clients cli WHERE cli.id=:clientId"
-           
     ),
     @NamedQuery(
             name = "getAllClients", query = "SELECT c FROM Client c"

@@ -7,6 +7,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,6 +18,9 @@ import javax.xml.bind.annotation.XmlTransient;
  * Class Artist extends from user
  * @author Ander, Matteo
  */
+@NamedQueries({
+    @NamedQuery(name = "getAllArtists", query = "SELECT a FROM Artist a")
+})
 @Entity
 @Table(name="artist", schema="reto2G2i")
 @XmlRootElement

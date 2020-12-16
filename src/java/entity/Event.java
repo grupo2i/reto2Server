@@ -26,7 +26,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "selectAllEvents", 
             query = "SELECT ev FROM Event ev"
-    ) 
+    ),
+    @NamedQuery(
+            name = "getEventsByName",
+            query = "SELECT ev From Event ev WHERE ev.name = '%"+":name"+"%'")
 })
 @Entity
 @Table(name = "event", schema = "reto2G2i")
@@ -38,6 +41,7 @@ public class Event implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    private String name;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date date;
     private String place;
