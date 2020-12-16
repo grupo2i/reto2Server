@@ -7,6 +7,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -14,6 +16,9 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Martin Angulo
  */
+@NamedQueries({
+    @NamedQuery(name = "getAllClubs", query = "SELECT c FROM Club c"),
+})
 @Entity
 @Table(name="club", schema="reto2G2i")
 @XmlRootElement

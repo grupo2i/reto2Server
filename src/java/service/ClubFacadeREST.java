@@ -1,6 +1,7 @@
 package service;
 
 import entity.Club;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -54,6 +55,17 @@ public class ClubFacadeREST extends AbstractFacade<Club> {
     @Produces({MediaType.APPLICATION_XML})
     public Club find(@PathParam("id") Integer id) {
         return super.find(id);
+    }
+    /**
+     * Gets all the registered Clubs.
+     * @return A list of Clubs.
+     */
+    @GET
+    @Path("getAllClubs")
+    @Produces({MediaType.APPLICATION_XML})
+    @Override
+    public List<Club> getAllClubs(){
+        return super.getAllClubs();
     }
 
     @Override

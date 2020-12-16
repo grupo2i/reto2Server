@@ -1,6 +1,8 @@
 package service;
 
 import entity.Client;
+import entity.Event;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -54,6 +56,30 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
     @Produces({MediaType.APPLICATION_XML})
     public Client find(@PathParam("id") Integer id) {
         return super.find(id);
+    }
+    
+    /**
+     * Gets all the events a client has signed up for.
+     * @param id Id of the Client to get the Events.
+     * @return A list of Events related to the specified Client.
+     */
+    @GET
+    @Path("getEventsByClient/{id}")
+    @Produces({MediaType.APPLICATION_XML})
+    @Override
+    public List<Event> getEventsByClientId(@PathParam("id") Integer id){
+        return super.getEventsByClientId(id);
+    }
+    /**
+     * Gets all the registered Clients.
+     * @return A list of Clients.
+     */
+    @GET
+    @Path("getAllClients")
+    @Produces({MediaType.APPLICATION_XML})
+    @Override
+    public List<Client> getAllClients(){
+        return super.getAllClients();
     }
 
     @Override

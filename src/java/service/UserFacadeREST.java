@@ -31,14 +31,14 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML})
     public void create(User entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML})
     public void edit(@PathParam("id") Integer id, User entity) {
         super.edit(entity);
     }
@@ -51,9 +51,28 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML})
     public User find(@PathParam("id") Integer id) {
         return super.find(id);
+    }
+    /**
+     * Looks for the User with the specified login and password.
+     * @param login The login of the User signing in.
+     * @param password The password of the User signing in.
+     * @return The User with the specified data.
+     */
+    @GET
+    @Path("signIn/{login}/{password}")
+    @Produces({MediaType.APPLICATION_XML})
+    @Override
+    public User signIn(@PathParam("login") String login, @PathParam("password") String password){
+        User user = null;
+        //try{
+            user = super.signIn(login, password);
+        //} catch (NotFoundException ex){
+        //  BAD LOGIN
+        //}
+          return user;
     }
 
     @Override
