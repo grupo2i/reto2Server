@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Superclass of all type of users, contains common attributes.
@@ -104,6 +105,7 @@ public class User implements Serializable {
     @OneToMany(cascade=CascadeType.ALL, mappedBy="client", fetch = FetchType.EAGER)
     private Set<Rating> ratings;
 
+    @XmlTransient
     public Set<Rating> getRatings() {
         return ratings;
     }

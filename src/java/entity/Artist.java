@@ -31,7 +31,7 @@ public class Artist extends User implements Serializable {
     @OneToMany(mappedBy="artist", fetch = FetchType.EAGER)
     private Set<SocialNetwork> socialNetworks;
     @Enumerated
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private MusicGenreEntity musicGenre;
     @ManyToMany
     @JoinTable(name="artist_event", schema="reto2G2i")
@@ -50,11 +50,10 @@ public class Artist extends User implements Serializable {
         this.events = events;
     }
 
-
     public Set<SocialNetwork> getSocialNetworks() {
         return socialNetworks;
     }
-
+    
     public MusicGenreEntity getMusicGenre() {
         return musicGenre;
     }

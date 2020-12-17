@@ -57,6 +57,30 @@ public class Event implements Serializable {
     @OneToMany(cascade=CascadeType.ALL, mappedBy="event", fetch = FetchType.EAGER)
     private Set<Rating> ratings;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Club getClub() {
+        return club;
+    }
+
+    public void setClub(Club club) {
+        this.club = club;
+    }
+
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -77,11 +101,10 @@ public class Event implements Serializable {
         return description;
     }
 
-    @XmlTransient
     public Set<Artist> getArtists() {
         return artists;
     }
-
+    
     public Club getClubs() {
         return club;
     }

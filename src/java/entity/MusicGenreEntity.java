@@ -3,14 +3,16 @@ package entity;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.EnumType;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity that stores all music genres related to Artists.
@@ -19,6 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="musicGenre", schema="reto2G2i")
+@XmlRootElement
 public class MusicGenreEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -27,7 +30,7 @@ public class MusicGenreEntity implements Serializable {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private MusicGenre musicGenre;
-    @OneToMany(mappedBy="musicGenre")
+    @OneToMany(mappedBy="musicGenre", fetch = FetchType.EAGER)
     private Set<Artist> artists;
     
 
@@ -42,11 +45,12 @@ public class MusicGenreEntity implements Serializable {
     public MusicGenre getMusicGenre() {
         return musicGenre;
     }
-
+    
     public void setMusicGenre(MusicGenre musicGenre) {
         this.musicGenre = musicGenre;
     }
-
+    
+    @XmlTransient
     public Set<Artist> getArtists() {
         return artists;
     }
