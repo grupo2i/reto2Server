@@ -104,10 +104,6 @@ public class Event implements Serializable {
     public Set<Artist> getArtists() {
         return artists;
     }
-    
-    public Club getClubs() {
-        return club;
-    }
 
     @XmlTransient
     public Set<Client> getClients() {
@@ -136,10 +132,6 @@ public class Event implements Serializable {
 
     public void setArtists(Set<Artist> artists) {
         this.artists = artists;
-    }
-
-    public void setClubs(Club club) {
-        this.club = club;
     }
 
     public void setClients(Set<Client> clients) {

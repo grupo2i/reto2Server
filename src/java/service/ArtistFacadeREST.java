@@ -54,7 +54,9 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
     public Artist find(@PathParam("id") Integer id) {
-        return super.find(id);
+        Artist artist = null;
+        artist = super.find(id);
+        return artist;
     }
     /**
      * Gets all the registered Artists.

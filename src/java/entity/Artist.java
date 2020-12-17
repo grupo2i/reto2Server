@@ -3,11 +3,11 @@ package entity;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -30,9 +30,8 @@ public class Artist extends User implements Serializable {
     private static final long serialVersionUID = 1L;
     @OneToMany(mappedBy="artist", fetch = FetchType.EAGER)
     private Set<SocialNetwork> socialNetworks;
-    @Enumerated
-    @ManyToOne(fetch = FetchType.EAGER)
-    private MusicGenreEntity musicGenre;
+    @Enumerated(EnumType.STRING)
+    private MusicGenre musicGenre;
     @ManyToMany
     @JoinTable(name="artist_event", schema="reto2G2i")
     private Set<Event> events;
@@ -42,26 +41,28 @@ public class Artist extends User implements Serializable {
         this.socialNetworks = socialNetworks;
     }
 
-    public void setMusicGenres(MusicGenreEntity musicGenre) {
-        this.musicGenre = musicGenre;
-    }
-
     public void setEvents(Set<Event> events) {
         this.events = events;
     }
 
+    public void setMusicGenre(MusicGenre musicGenre) {
+        this.musicGenre = musicGenre;
+    }
+
     public Set<SocialNetwork> getSocialNetworks() {
         return socialNetworks;
-    }
-    
-    public MusicGenreEntity getMusicGenre() {
-        return musicGenre;
     }
 
     @XmlTransient
     public Set<Event> getEvents() {
         return events;
     }
+
+    public MusicGenre getMusicGenre() {
+        return musicGenre;
+    }
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
