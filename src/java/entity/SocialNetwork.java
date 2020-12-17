@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Stores a social network of an Artist.
@@ -41,7 +42,7 @@ public class SocialNetwork implements Serializable {
     public void setSocialNetwork(URL socialNetwork) {
         this.socialNetwork = socialNetwork;
     }
-
+    @XmlTransient
     public Artist getArtist() {
         return artist;
     }

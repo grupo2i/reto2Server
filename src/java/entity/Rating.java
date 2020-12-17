@@ -10,6 +10,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Contains a Clients evaluation of an Event.
@@ -88,6 +89,7 @@ public class Rating implements Serializable {
     /**
      * @return The User that made the rating.
      */
+    @XmlTransient
     public User getClient() {
         return client;
     }
@@ -104,6 +106,7 @@ public class Rating implements Serializable {
     /**
      * @return The Event that has been rated.
      */
+    @XmlTransient
     public Event getEvent() {
         return event;
     }

@@ -99,7 +99,6 @@ public abstract class AbstractFacade<T> {
                 .setParameter("password", password)
                 .getSingleResult();
     }    
-}
 
     public List<Rating> getAllRatingsByUserId(Integer id) {
         return getEntityManager()
