@@ -3,10 +3,12 @@ package service;
 import entity.User;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -67,11 +69,11 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Override
     public User signIn(@PathParam("login") String login, @PathParam("password") String password){
         User user = null;
-        //try{
+        try{
             user = super.signIn(login, password);
-        //} catch (NotFoundException ex){
-        //  BAD LOGIN
-        //}
+        } catch (NoResultException ex){
+            throw new NotAuthorizedException(ex);
+        }
           return user;
     }
 
