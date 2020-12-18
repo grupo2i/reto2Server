@@ -95,6 +95,10 @@ public class User implements Serializable {
      */
     @NotNull
     private Timestamp lastPasswordChange;
+    /**
+     * Name of the profile image of the User.
+     */
+    private String profileImage;
     
     /**
      * Ratings of an event made by a User.
@@ -104,16 +108,6 @@ public class User implements Serializable {
      */
     @OneToMany(cascade=CascadeType.ALL, mappedBy="client", fetch = FetchType.EAGER)
     private Set<Rating> ratings;
-
-    @XmlTransient
-    public Set<Rating> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(Set<Rating> ratings) {
-        this.ratings = ratings;
-    }
-    
     
     
     public Integer getId() {
@@ -194,6 +188,23 @@ public class User implements Serializable {
 
     public void setLastPasswordChange(Timestamp lastPasswordChange) {
         this.lastPasswordChange = lastPasswordChange;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+    
+    @XmlTransient
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
     }
     
 
