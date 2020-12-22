@@ -30,13 +30,13 @@ public class KeyGenerator {
 
             // Publica
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(publicKey.getEncoded());
-            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\aitor\\OneDrive\\Documentos\\NetBeansProjects\\reto2DesktopClient\\src\\reto2desktopclient\\security\\Public.key");
+            FileOutputStream fileOutputStream = new FileOutputStream("C:\\keys\\Public.key");
             fileOutputStream.write(x509EncodedKeySpec.getEncoded());
             fileOutputStream.close();
 
             // Privada
             PKCS8EncodedKeySpec pKCS8EncodedKeySpec = new PKCS8EncodedKeySpec(privateKey.getEncoded());
-            fileOutputStream = new FileOutputStream("C:\\Users\\aitor\\OneDrive\\Documentos\\NetBeansProjects\\reto2Server\\src\\java\\security\\Private.key");
+            fileOutputStream = new FileOutputStream("C:\\keys\\Private.key");
             fileOutputStream.write(pKCS8EncodedKeySpec.getEncoded());
             fileOutputStream.close();
         } catch (Exception e) {
