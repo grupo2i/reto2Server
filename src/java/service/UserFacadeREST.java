@@ -1,6 +1,7 @@
 package service;
 
 import entity.User;
+import java.util.Base64;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -15,6 +16,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import security.Hashing;
+import security.PublicDecrypt;
 
 /**
  *
@@ -55,26 +58,38 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
     public User find(@PathParam("id") Integer id) {
-        return super.find(id);
+        User user = null;
+        user = super.find(id);
+        //Detaching user so that changes are not updated in the DB...
+        em.detach(user.getRatings());
+        em.detach(user);
+        user.setPassword("");
+        
+        return user;
     }
     /**
      * Looks for the User with the specified login and password.
      * @param login The login of the User signing in.
-     * @param password The password of the User signing in.
+     * @param encodedPasswordStr The encoded password of the User signing in.
      * @return The User with the specified data.
      */
     @GET
     @Path("signIn/{login}/{password}")
     @Produces({MediaType.APPLICATION_XML})
-    @Override
-    public User signIn(@PathParam("login") String login, @PathParam("password") String password){
+    public User signIn(@PathParam("login") String login, @PathParam("password") String encodedPasswordStr){
         User user = null;
         try{
+            //Convert the String value of the encoded password to byte array.
+            byte[] encodedPassword = Base64.getDecoder().decode(encodedPasswordStr);
+            //Decrypting and hashing the password sent from the client.
+            String password = Hashing.cifrarTexto(new String(PublicDecrypt
+                    .decode(encodedPassword)));
             user = super.signIn(login, password);
+            if(user == null) throw new NoResultException();
         } catch (NoResultException ex){
             throw new NotAuthorizedException(ex);
         }
-          return user;
+        return user;
     }
 
     @Override

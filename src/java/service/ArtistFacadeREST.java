@@ -14,6 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import security.Hashing;
 
 /**
  *
@@ -34,6 +35,8 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Artist entity) {
+        //Encode the password with hashing algorithm.
+        entity.setPassword(Hashing.cifrarTexto(entity.getPassword()));
         super.create(entity);
     }
 
