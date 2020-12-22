@@ -14,7 +14,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 /**
  *
- * @author ander
+ * @author Ander Vicente, Aitor Fidalgo
  */
 public class PrivateCrypt {
        // Fíjate que el String es de exactamente 16 bytes
@@ -28,7 +28,7 @@ public class PrivateCrypt {
      * @param mensaje El mensaje a cifrar
      * @return Mensaje cifrado
      */
-    public String cifrarTexto(String clave, String mensaje) {
+    public static String cifrarTexto(String clave, String mensaje) {
         String ret = null;
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
@@ -49,7 +49,7 @@ public class PrivateCrypt {
             // Guardamos el mensaje codificado: IV (16 bytes) + Mensaje
             byte[] combined = concatArrays(iv, encodedMessage);
 
-            fileWriter("c:\\trastero\\EjemploAES.dat", combined);
+            fileWriter("EmailCredentials.dat", combined);
 
             ret = new String(encodedMessage);
 
@@ -66,7 +66,7 @@ public class PrivateCrypt {
      * @param array2
      * @return Concatenaci�n de ambos arrays
      */
-    private byte[] concatArrays(byte[] array1, byte[] array2) {
+    private static byte[] concatArrays(byte[] array1, byte[] array2) {
         byte[] ret = new byte[array1.length + array2.length];
         System.arraycopy(array1, 0, ret, 0, array1.length);
         System.arraycopy(array2, 0, ret, array1.length, array2.length);
@@ -79,7 +79,7 @@ public class PrivateCrypt {
      * @param path Path del fichero
      * @param text Texto a escibir
      */
-    private void fileWriter(String path, byte[] text) {
+    private static void fileWriter(String path, byte[] text) {
         try (FileOutputStream fos = new FileOutputStream(path)) {
                 fos.write(text);
         } catch (IOException e) {
