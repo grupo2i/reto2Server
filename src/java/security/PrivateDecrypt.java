@@ -6,7 +6,6 @@
 package security;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.security.spec.KeySpec;
@@ -20,22 +19,21 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
- * @author 2dam
+ * @author Ander Vicente, Aitor Fidalgo
  */
 public class PrivateDecrypt {
-
-    private String descifrarTexto(String password) {
-
+    private static byte[] salt = "esta es la salt!".getBytes(); 
+    
+    public static String decryptMessage(String clave) {
         String ret = null;
 
         // Fichero leído
-        byte[] fileContent = fileReader("c:\\trastero\\EjemploAES.dat");
+        byte[] fileContent = fileReader("EmailCredentials.dat");
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
         try {
-            byte[] salt = password.getBytes();
-            // Creamos un SecretKey usando la password + salt
-            keySpec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128); // AES-128
+            // Creamos un SecretKey usando la clave + salt
+            keySpec = new PBEKeySpec(clave.toCharArray(), salt, 65536, 128); // AES-128
             secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] key = secretKeyFactory.generateSecret(keySpec).getEncoded();
             SecretKey privateKey = new SecretKeySpec(key, 0, key.length, "AES");
@@ -58,7 +56,7 @@ public class PrivateDecrypt {
      * @param path Path del fichero
      * @return El texto del fichero
      */
-    private byte[] fileReader(String path) {
+    private static byte[] fileReader(String path) {
         byte ret[] = null;
         File file = new File(path);
         try {
