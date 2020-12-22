@@ -18,15 +18,11 @@ import javax.crypto.Cipher;
  * @author ander
  */
 public class PublicDecrypt {
-
-    byte[] descifrarTexto(byte[] mensaje) {
+    public static byte[] decode(byte[] mensaje) {
         byte[] decodedMessage = null;
         try {
-            // Clave publica
-            byte fileKey[] = fileReader("c:\\claves\\Private.key");
-            System.out.println("SIZE:--> " + fileKey.length + " bytes");
-
-            System.out.println("SIZE:--> " + fileKey.length + " bytes");
+            byte fileKey[] = fileReader(".\\src\\java\\security\\Private.key");
+            
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             PKCS8EncodedKeySpec pKCS8EncodedKeySpec = new PKCS8EncodedKeySpec(fileKey);
             PrivateKey privateKey = keyFactory.generatePrivate(pKCS8EncodedKeySpec);
@@ -40,7 +36,7 @@ public class PublicDecrypt {
         return decodedMessage;
     }
 
-    private byte[] fileReader(String path) {
+    private static byte[] fileReader(String path) {
         byte ret[] = null;
         File file = new File(path);
         try {

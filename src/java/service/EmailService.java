@@ -84,14 +84,4 @@ public class EmailService {
         // And here it goes...
         Transport.send(message);
     }
-
-    public static void main(String[] args) {
-        try {
-            EmailService.sendMail("aitorfidalgo@gmail.com", "Mensaje de prueba", 
-                    "Correo de vital importancia");
-            System.out.println("Ok, mail sent!");
-        } catch (MessagingException e) {
-            System.out.println("Doh! " + e.getMessage());
-        }
-    }
 }
