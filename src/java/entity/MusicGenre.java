@@ -2,7 +2,7 @@ package entity;
 
 /**
  *
- * @author 2dam
+ * @author Ander
  */
 public enum MusicGenre {
     POP,

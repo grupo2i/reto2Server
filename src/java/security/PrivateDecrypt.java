@@ -28,7 +28,7 @@ public class PrivateDecrypt {
         String ret = null;
 
         // Fichero leído
-        byte[] fileContent = fileReader("EmailCredentials.dat");
+        byte[] fileContent = fileReader(".\\src\\java\\security\\EmailCredentials.dat");
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
         try {

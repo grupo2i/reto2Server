@@ -24,7 +24,7 @@ import javax.ws.rs.core.PathSegment;
 
 /**
  *
- * @author Ander
+ * @author ander
  */
 @Stateless
 @Path("entity.rating")

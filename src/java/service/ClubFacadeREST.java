@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author aitor
+ * @author Martín
  */
 @Stateless
 @Path("entity.club")
