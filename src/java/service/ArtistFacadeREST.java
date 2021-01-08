@@ -18,7 +18,7 @@ import security.Hashing;
 
 /**
  *
- * @author aitor
+ * @author Martin
  */
 @Stateless
 @Path("entity.artist")

@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author aitor
+ * @author Matteo
  */
 @Stateless
 @Path("entity.event")

@@ -12,6 +12,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.mail.MessagingException;
+import static service.EmailService.sendMail;
 /**
  *
  * @author Ander Vicente, Aitor Fidalgo
@@ -49,7 +51,7 @@ public class PrivateCrypt {
             // Guardamos el mensaje codificado: IV (16 bytes) + Mensaje
             byte[] combined = concatArrays(iv, encodedMessage);
 
-            fileWriter("EmailCredentials.dat", combined);
+            fileWriter(".\\src\\java\\security\\EmailCredentials.dat", combined);
 
             ret = new String(encodedMessage);
 
@@ -85,5 +87,9 @@ public class PrivateCrypt {
         } catch (IOException e) {
                 e.printStackTrace();
         }
+    }
+    
+    public static void main(String[] args) {
+        cifrarTexto("papaya", "grupo2angloparlantes@gmail.com?grupo2i*1234");
     }
 }

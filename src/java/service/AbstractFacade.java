@@ -6,6 +6,7 @@ import entity.Club;
 import entity.Event;
 import entity.User;
 import entity.Rating;
+import exception.UnexpectedErrorException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.ws.rs.NotFoundException;
@@ -25,20 +26,61 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) {
-        getEntityManager().persist(entity);
+    /**
+     * Persists an entity in the database.
+     * @param entity The entity to be persisted.
+     * @throws UnexpectedErrorException If anything goes wrong.
+     */
+    public void create(T entity) throws UnexpectedErrorException {
+        try {
+            getEntityManager().persist(entity);
+        } catch (Exception ex) {
+            throw new UnexpectedErrorException(ex.getMessage());
+        }
+        
     }
 
-    public void edit(T entity) {
-        getEntityManager().merge(entity);
+    /**
+     * Updates an entity in the database with the specified data.
+     * @param entity Entity with the updated data.
+     * @throws UnexpectedErrorException If anything goes wrong.
+     */
+    public void edit(T entity) throws UnexpectedErrorException {
+        try {
+            getEntityManager().merge(entity);
+        } catch (Exception ex) {
+            throw new UnexpectedErrorException(ex.getMessage());
+        }
+        
     }
 
-    public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
+    /**
+     * Removes an entity from the database.
+     * @param entity The entity to be removed.
+     * @throws UnexpectedErrorException If anything goes wrong.
+     */
+    public void remove(T entity) throws UnexpectedErrorException {
+        try {
+            getEntityManager().remove(getEntityManager().merge(entity));
+        } catch (Exception ex) {
+            throw new UnexpectedErrorException(ex.getMessage());
+        }
+        
     }
     
-    public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+    /**
+     * Fiends an entity in the database using its id attribute.
+     * @param id The id of the entity.
+     * @return The requested entity.
+     * @throws UnexpectedErrorException If anything goes wrong.
+     */
+    public T find(Object id) throws UnexpectedErrorException {
+        try {
+            return getEntityManager().find(entityClass, id);
+        } catch (Exception ex) {
+            throw new UnexpectedErrorException(ex.getMessage());
+        }
+        
     }
     
     /**
@@ -52,9 +94,10 @@ public abstract class AbstractFacade<T> {
                 .setParameter("clientId", clientId)
                 .getResultList();
     }
+    
     /**
      * Gets all the registered Clients.
-     * @return A list of Clients.
+     * @return A list of all Clients.
      */
     public List<Client> getAllClients(){
         return getEntityManager()
@@ -63,7 +106,7 @@ public abstract class AbstractFacade<T> {
     }
     /**
      * Gets all the registered Clubs.
-     * @return A list of Clubs.
+     * @return A list of all Clubs.
      */
     public List<Club> getAllClubs(){
         return getEntityManager()
@@ -72,7 +115,7 @@ public abstract class AbstractFacade<T> {
     }
     /**
      * Gets all the registered Artists.
-     * @return A list of Artists.
+     * @return A list of all Artists.
      */
     public List<Artist> getAllArtists(){
         return getEntityManager()
@@ -85,14 +128,14 @@ public abstract class AbstractFacade<T> {
           .createNamedQuery("getAllEvents")
           .getResultList();
     }
+    
     /**
      * Looks for the User with the specified login and password.
-     * @param login The login of the User signing in.
-     * @param password The password of the User signing in.
+     * @param login The login of the requested User.
+     * @param password The password of the requested User.
      * @return The User with the specified data.
-     * @throws NotFoundException If the User with the specified data does not exist.
      */
-    public User signIn(String login, String password) throws NotFoundException{
+    public User signIn(String login, String password) {
         return (User) getEntityManager()
                 .createNamedQuery("signIn")
                 .setParameter("login", login)
