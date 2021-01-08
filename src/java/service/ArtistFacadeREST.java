@@ -18,7 +18,7 @@ import security.Hashing;
 
 /**
  *
- * @author aitor
+ * @author Matteo
  */
 @Stateless
 @Path("entity.artist")
@@ -31,6 +31,11 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
         super(Artist.class);
     }
 
+    /**
+     * Creates the entity Artist
+     *
+     * @param entity
+     */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
@@ -40,6 +45,11 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
         super.create(entity);
     }
 
+    /**
+     * Edits artists
+     *
+     * @param entity
+     */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
     @Override
@@ -47,12 +57,23 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
         super.edit(entity);
     }
 
+    /**
+     * Removes the artist by id
+     *
+     * @param id
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
 
+    /**
+     * Find artist by id
+     *
+     * @param id
+     * @return the artist associated to that id
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -61,15 +82,17 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
         artist = super.find(id);
         return artist;
     }
+
     /**
      * Gets all the registered Artists.
+     *
      * @return A list of Artists.
      */
     @GET
     @Path("getAllArtists")
     @Produces({MediaType.APPLICATION_XML})
     @Override
-    public List<Artist> getAllArtists(){
+    public List<Artist> getAllArtists() {
         return super.getAllArtists();
     }
 
