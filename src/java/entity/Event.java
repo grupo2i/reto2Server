@@ -46,7 +46,7 @@ public class Event implements Serializable {
     private Float ticketprice;
     private String description;
     private String profileImage;
-    @ManyToOne()
+    @ManyToOne
     private Club club;
 
     @ManyToMany(mappedBy="events", fetch = FetchType.EAGER)
