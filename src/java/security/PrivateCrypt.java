@@ -12,14 +12,13 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.mail.MessagingException;
-import static service.EmailService.sendMail;
+
 /**
  *
  * @author Ander Vicente, Aitor Fidalgo
  */
 public class PrivateCrypt {
-       // Fíjate que el String es de exactamente 16 bytes
+    // Fíjate que el String es de exactamente 16 bytes
     private static byte[] salt = "esta es la salt!".getBytes(); 
 
     /**
@@ -89,7 +88,4 @@ public class PrivateCrypt {
         }
     }
     
-    public static void main(String[] args) {
-        cifrarTexto("papaya", "grupo2angloparlantes@gmail.com?grupo2i*1234");
-    }
 }

@@ -147,6 +147,9 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return user;
     }
 
+    /**
+     * @return EntityManager instance used in the class.
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
