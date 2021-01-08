@@ -30,6 +30,11 @@ public class EventFacadeREST extends AbstractFacade<Event> {
         super(Event.class);
     }
 
+    /**
+     * Creates event entity
+     *
+     * @param entity
+     */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
@@ -37,6 +42,11 @@ public class EventFacadeREST extends AbstractFacade<Event> {
         super.create(entity);
     }
 
+    /**
+     * Is for edit the event entity
+     *
+     * @param entity
+     */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
     @Override
@@ -44,12 +54,23 @@ public class EventFacadeREST extends AbstractFacade<Event> {
         super.edit(entity);
     }
 
+    /**
+     * Removes the event by id
+     *
+     * @param id
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
 
+    /**
+     * Finds the event by id
+     *
+     * @param id
+     * @return the events
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -57,6 +78,11 @@ public class EventFacadeREST extends AbstractFacade<Event> {
         return super.find(id);
     }
 
+    /**
+     * Gets all events
+     *
+     * @return a list of events
+     */
     @GET
     @Path("getAllEvents")
     @Produces({MediaType.APPLICATION_XML})
