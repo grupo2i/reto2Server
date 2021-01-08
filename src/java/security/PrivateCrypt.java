@@ -12,12 +12,13 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+
 /**
  *
  * @author Ander Vicente, Aitor Fidalgo
  */
 public class PrivateCrypt {
-       // Fíjate que el String es de exactamente 16 bytes
+    // Fíjate que el String es de exactamente 16 bytes
     private static byte[] salt = "esta es la salt!".getBytes(); 
 
     /**
@@ -49,7 +50,7 @@ public class PrivateCrypt {
             // Guardamos el mensaje codificado: IV (16 bytes) + Mensaje
             byte[] combined = concatArrays(iv, encodedMessage);
 
-            fileWriter("EmailCredentials.dat", combined);
+            fileWriter(".\\src\\java\\security\\EmailCredentials.dat", combined);
 
             ret = new String(encodedMessage);
 
@@ -86,4 +87,5 @@ public class PrivateCrypt {
                 e.printStackTrace();
         }
     }
+    
 }
