@@ -2,6 +2,8 @@ package service;
 
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -16,10 +18,14 @@ import javax.mail.internet.MimeMultipart;
 import security.PrivateDecrypt;
 
 /**
+ * Contains the method meant to send email.
  *
  * @author Aitor Fidalgo
  */
 public class EmailService {
+
+    private static final Logger LOGGER = Logger.getLogger(EmailService.class.getName());
+
     // Server mail user & pass account
     private static String user = null;
     private static String password = null;
@@ -31,7 +37,17 @@ public class EmailService {
     //Properties file containing the data avobe.
     private static ResourceBundle propertiesFile = null;
 
+    /**
+     * Sends an email with the specified content to the specified reciever.
+     *
+     * @param receiver The reciever of the email.
+     * @param subject The subject of the email.
+     * @param text The text of the email.
+     * @throws MessagingException If anything goes wrong.
+     */
     public static void sendMail(String receiver, String subject, String text) throws MessagingException {
+        LOGGER.log(Level.INFO, "Starting method sendEmail on {0}", EmailService.class.getName());
+
         //Getting email properties from properties file...
         propertiesFile = ResourceBundle.getBundle("properties.properties");
         smtp_host = propertiesFile.getString("smtpHost");
@@ -40,11 +56,9 @@ public class EmailService {
         secretWord = propertiesFile.getString("secretWord");
         //Getting user and password...
         String emailCredentials = PrivateDecrypt.decryptMessage(secretWord);
-        //if(emailCredentials == null) 
-        //    throw new UnexpectedErrorException();
         user = emailCredentials.substring(0, emailCredentials.indexOf("?"));
-        password = emailCredentials.substring(emailCredentials.indexOf("?")+1);
-        
+        password = emailCredentials.substring(emailCredentials.indexOf("?") + 1);
+
         //Setting email properties...
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", true);

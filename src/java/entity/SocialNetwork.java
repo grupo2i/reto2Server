@@ -11,46 +11,73 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Stores a social network of an Artist.
+ * Defines social networks that can be owed by Artists.
+ *
  * @see Artist
  * @author Aitor Fidalgo
  */
 @Entity
-@Table(name="socialNetwork", schema="reto2G2i")
+@Table(name = "socialNetwork", schema = "reto2G2i")
 public class SocialNetwork implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
+    /**
+     * Used to identify socialNetwork profiles.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    /**
+     * URL of the social network profile of the owner.
+     */
     private URL socialNetwork;
+    /**
+     * Artist who is owner of the social network profile.
+     */
     @ManyToOne
     private Artist artist;
 
+    /**
+     * @return The id of the social network.
+     */
     public Integer getId() {
         return id;
     }
-
+    /**
+     * Sets the value of the id.
+     * @param id The value.
+     */
     public void setId(Integer id) {
         this.id = id;
     }
-
+    /**
+     * @return The social network profile URL.
+     */
     public URL getSocialNetwork() {
         return socialNetwork;
     }
-
+    /**
+     * Sets the value of the social network URL.
+     * @param socialNetwork The value.
+     */
     public void setSocialNetwork(URL socialNetwork) {
         this.socialNetwork = socialNetwork;
     }
+    /**
+     * @return The owner of the social network profile.
+     */
     @XmlTransient
     public Artist getArtist() {
         return artist;
     }
-
+    /**
+     * Sets the value of the Artist, owner of the social network.
+     * @param artist The value.
+     */
     public void setArtist(Artist artist) {
         this.artist = artist;
     }
-    
 
     @Override
     public int hashCode() {
@@ -71,10 +98,10 @@ public class SocialNetwork implements Serializable {
         }
         return true;
     }
-    
+
     @Override
     public String toString() {
         return "entity.SocialNetwork[ id=" + id + " ]";
     }
-    
+
 }

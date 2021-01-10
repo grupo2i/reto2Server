@@ -171,6 +171,7 @@ public class Rating implements Serializable {
         }
         return true;
     }
+
     @Override
     public String toString() {
         return "entity.Rating[ id=" + ratingId + " ]";
