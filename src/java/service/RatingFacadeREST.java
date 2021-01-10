@@ -1,11 +1,11 @@
 package service;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import entity.Rating;
 import entity.RatingId;
-import exceptions.UnexpectedErrorException;
+import exception.UnexpectedErrorException;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -30,6 +30,8 @@ import javax.ws.rs.core.PathSegment;
 @Path("entity.rating")
 public class RatingFacadeREST extends AbstractFacade<Rating> {
 
+    private static final Logger LOGGER = Logger.getLogger(RatingFacadeREST.class.getName());
+    
     @PersistenceContext(unitName = "reto2ServerPU")
     private EntityManager em;
 
@@ -169,7 +171,7 @@ public class RatingFacadeREST extends AbstractFacade<Rating> {
             }
         } catch (UnexpectedErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new InternalServerErrorException(ex);
         }
         LOGGER.log(Level.INFO, "Reading ratings for event {0}", id);
         return rating;
@@ -197,7 +199,7 @@ public class RatingFacadeREST extends AbstractFacade<Rating> {
             }
         } catch (UnexpectedErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new InternalServerErrorException(ex);
         }
         LOGGER.log(Level.INFO, "Reading ratings for event {0}", id);
         return rating;

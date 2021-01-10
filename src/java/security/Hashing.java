@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package security;
 
 import java.security.MessageDigest;
@@ -10,11 +5,11 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  *
- * @author 2dam
+ * @author Ander
  */
 public class Hashing {
 
-    public static String cifrarTexto(String texto) {
+    public static String encode(String texto) {
         MessageDigest messageDigest;
         try {
             // Obtén una instancia de MessageDigest que usa SHA

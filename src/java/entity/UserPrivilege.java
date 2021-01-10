@@ -2,6 +2,7 @@ package entity;
 
 /**
  * Specifies the type and privileges of a User.
+ *
  * @see User
  * @see Client
  * @see Club

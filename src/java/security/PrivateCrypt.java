@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package security;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.spec.KeySpec;
@@ -29,7 +25,7 @@ public class PrivateCrypt {
      * @param mensaje El mensaje a cifrar
      * @return Mensaje cifrado
      */
-    public static String cifrarTexto(String clave, String mensaje) {
+    public static String encode(String clave, String mensaje) {
         String ret = null;
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
