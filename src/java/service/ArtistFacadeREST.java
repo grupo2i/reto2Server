@@ -1,19 +1,24 @@
 package service;
 
 import entity.Artist;
+import exception.UnexpectedErrorException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NoContentException;
 import security.Hashing;
 
 /**
@@ -24,6 +29,8 @@ import security.Hashing;
 @Path("entity.artist")
 public class ArtistFacadeREST extends AbstractFacade<Artist> {
 
+    private static final Logger LOGGER = Logger.getLogger(ArtistFacadeREST.class.getName());
+    
     @PersistenceContext(unitName = "reto2ServerPU")
     private EntityManager em;
 
@@ -41,8 +48,13 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Artist entity) {
         //Encode the password with hashing algorithm.
-        entity.setPassword(Hashing.cifrarTexto(entity.getPassword()));
-        super.create(entity);
+        entity.setPassword(Hashing.encode(entity.getPassword()));
+        try {
+            LOGGER.log(Level.INFO, "Starting method create on {0}", ArtistFacadeREST.class.getName());
+            super.create(entity);
+        } catch (UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
     }
 
     /**
@@ -54,7 +66,12 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
     @Consumes({MediaType.APPLICATION_XML})
     @Override
     public void edit(Artist entity) {
-        super.edit(entity);
+        try {
+            LOGGER.log(Level.INFO, "Starting method edit on {0}", ArtistFacadeREST.class.getName());
+            super.edit(entity);
+        } catch (UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
     }
 
     /**
@@ -65,7 +82,12 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+        try {
+            LOGGER.log(Level.INFO, "Starting method remove on {0}", ArtistFacadeREST.class.getName());
+            super.remove(super.find(id));
+        } catch (UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
     }
 
     /**
@@ -77,9 +99,17 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public Artist find(@PathParam("id") Integer id) {
-        Artist artist = null;
-        artist = super.find(id);
+    public Artist find(@PathParam("id") Integer id) throws NoContentException {
+        Artist artist;
+        try {
+            LOGGER.log(Level.INFO, "Starting method find on {0}", ArtistFacadeREST.class.getName());
+            artist = super.find(id);
+            if (artist == null) {
+                throw new NoContentException("The artist does not exist");
+            }
+        } catch (UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
         return artist;
     }
 
