@@ -1,6 +1,7 @@
 package service;
 
 import entity.User;
+import entity.UserPrivilege;
 import exception.UnexpectedErrorException;
 import java.util.Base64;
 import java.util.logging.Level;
@@ -174,6 +175,26 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return user;
     }
 
+    /**
+     * Looks for the UserPrivilege with the specified user.
+     *
+     * @param login The specified login.
+     * @return The User with the specified data.
+     */
+    @GET
+    @Path("getPrivilege/{login}")
+    @Produces({MediaType.APPLICATION_XML})
+    public String getPrivilege(@PathParam("login") String login) throws InternalServerErrorException {
+        String privilege = null;
+        try {
+            LOGGER.log(Level.INFO, "Starting method getPrivilege on {0}", UserFacadeREST.class.getName());
+            privilege = super.getPrivilege(login);
+        } catch (UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
+        return privilege;
+    }
+    
     /**
      * @return EntityManager instance used in the class.
      */

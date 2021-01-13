@@ -6,6 +6,7 @@ import entity.Club;
 import entity.Event;
 import entity.User;
 import entity.Rating;
+import entity.UserPrivilege;
 import exception.UnexpectedErrorException;
 import java.util.List;
 import java.util.logging.Level;
@@ -198,6 +199,32 @@ public abstract class AbstractFacade<T> {
 
     }
 
+    /**
+     * Looks for the UserPrivilege with the specified user.
+     *
+     * @param login The login of the User.
+     * @return The UserPrivilege as a string.
+     * @throws NotAuthorizedException If the login doesn't match with
+     * a registered user.
+     * @throws UnexpectedErrorException If anything goes wrong.
+     */
+    public String getPrivilege(String login) throws UnexpectedErrorException, NotAuthorizedException {
+        try {
+            LOGGER.log(Level.INFO, "Starting method getPrivilege on {0}", AbstractFacade.class.getName());
+            UserPrivilege privilege = (UserPrivilege)getEntityManager()
+                   .createNamedQuery("getPrivilege")
+                   .setParameter("login", login)
+                   .getSingleResult();
+            return privilege.name();
+        } catch (NoResultException | NonUniqueResultException ex) {
+            LOGGER.log(Level.SEVERE, ex.getMessage());
+            throw new NotAuthorizedException("User not found, incorrect login.");
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, ex.getMessage());
+            throw new UnexpectedErrorException(ex);
+        }
+    }
+    
     public List<Rating> getAllRatingsByUserId(Integer id) throws UnexpectedErrorException {
         try {
             return getEntityManager()

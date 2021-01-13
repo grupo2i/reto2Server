@@ -27,12 +27,16 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  * Superclass of all type of users, contains common attributes.
  *
- * @author Aitor Fidalgo
+ * @author Aitor Fidalgo, Martin Angulo
  */
 @NamedQueries({
     @NamedQuery(
             name = "signIn",
             query = "SELECT us FROM User us WHERE us.login like :login AND us.password like :password"
+    ),
+    @NamedQuery(
+            name = "getPrivilege",
+            query = "SELECT userPrivilege FROM User WHERE login like :login"
     )
 })
 @Entity
