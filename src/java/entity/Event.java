@@ -3,7 +3,6 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -55,7 +54,7 @@ public class Event implements Serializable {
     @ManyToMany(mappedBy="events", fetch = FetchType.EAGER)
     private Set<Client> clients;
     
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="event", fetch = FetchType.EAGER)
+    @OneToMany(/*cascade=CascadeType.ALL,*/ mappedBy="event", fetch = FetchType.EAGER)
     private Set<Rating> ratings;
 
     
