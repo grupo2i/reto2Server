@@ -1,9 +1,7 @@
 package service;
 
 import entity.User;
-import entity.UserPrivilege;
 import exception.UnexpectedErrorException;
-import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -22,6 +20,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import security.Hashing;
+import security.PublicCrypt;
 import security.PublicDecrypt;
 
 /**
@@ -69,20 +68,11 @@ public class UserFacadeREST extends AbstractFacade<User> {
      * @throws InternalServerErrorException If anything goes wrong.
      */
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML})
     @Override
     public void edit(User entity) throws InternalServerErrorException {
         try {
             LOGGER.log(Level.INFO, "Starting method edit on {0}", UserFacadeREST.class.getName());
-            if (entity.getPassword() == "") {
-                //TODO: Get password of the user.
-            } else {
-                byte[] encodedPassword = Base64.getDecoder()
-                        .decode(entity.getPassword());
-                entity.setPassword(Hashing.encode(new String(PublicDecrypt
-                        .decode(encodedPassword))));
-            }
             super.edit(entity);
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
@@ -126,10 +116,11 @@ public class UserFacadeREST extends AbstractFacade<User> {
             if (user == null) {
                 throw new NoResultException("The specified user does not exist.");
             }
-            //Detaching user so that changes are not updated in the DB.
+            //Detaching user to encode the password with RSA.
+            //The password is already encoded with SHA.
             em.detach(user);
-            //Deleting users password to send it trough the network.
-            user.setPassword("");
+            //Encoding password with RSA.
+            user.setPassword(PublicCrypt.encode(user.getPassword()));
         } catch (UnexpectedErrorException | NoResultException ex) {
             throw new InternalServerErrorException(ex);
         }
@@ -141,33 +132,32 @@ public class UserFacadeREST extends AbstractFacade<User> {
      * Looks for the User with the specified login and password.
      *
      * @param login The specified login.
-     * @param encodedPasswordStr The encoded specified password.
+     * @param encodedPassword The encoded specified password.
      * @return The User with the specified data.
      */
     @GET
     @Path("signIn/{login}/{password}")
     @Produces({MediaType.APPLICATION_XML})
+    @Override
     public User signIn(@PathParam("login") String login,
-            @PathParam("password") String encodedPasswordStr)
+            @PathParam("password") String encodedPassword)
             throws InternalServerErrorException {
         User user = null;
         try {
             LOGGER.log(Level.INFO, "Starting method signIn on {0}", UserFacadeREST.class.getName());
-            //Convert the String value of the encoded password to byte array.
-            //byte[] encodedPassword = Base64.getDecoder().decode(encodedPasswordStr);
-            //Decrypting and hashing the password sent from the client.
-            //String password = Hashing.encode(new String(PublicDecrypt
-            //        .decode(encodedPassword)));
-            String password = encodedPasswordStr;
+            //Decoding the password with RSA and then encoding it with SHA.
+            String password = Hashing.encode(PublicDecrypt
+                    .decode(encodedPassword));
             user = super.signIn(login, password);
             if (user == null) {
                 throw new NotAuthorizedException("User not found, incorrect login or password.");
             }
-
-            //Detaching user so that changes are not updated in the DB.
+            
+            //Detaching user to encode the password with RSA.
+            //The password is already encoded with SHA.
             em.detach(user);
-            //Deleting users password to send it through the network.
-            user.setPassword("");
+            //Encoding password with RSA.
+            user.setPassword(PublicCrypt.encode(user.getPassword()));
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
@@ -184,15 +174,16 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @GET
     @Path("getPrivilege/{login}")
     @Produces({MediaType.APPLICATION_XML})
-    public String getPrivilege(@PathParam("login") String login) throws InternalServerErrorException {
-        String privilege = null;
+    @Override
+    public User getPrivilege(@PathParam("login") String login) throws InternalServerErrorException {
         try {
             LOGGER.log(Level.INFO, "Starting method getPrivilege on {0}", UserFacadeREST.class.getName());
-            privilege = super.getPrivilege(login);
+            User user = new User();
+            user.setUserPrivilege(super.getPrivilege(login).getUserPrivilege());
+            return user;
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
-        return privilege;
     }
     
     /**

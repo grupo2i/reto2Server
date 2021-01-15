@@ -1,33 +1,45 @@
 package security;
 
+import exception.UnexpectedErrorException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- *
- * @author Ander
+ * Contains the methods meant to encode a message using SHA.
+ * 
+ * @author ander, Aitor Fidalgo
  */
 public class Hashing {
 
-    public static String encode(String texto) {
+    /**
+     * Encodes a byte array using SHA and returns the hexadecimal representation
+     * of the encoded message.
+     * 
+     * @param message Message to be encoded.
+     * @return Hexadecimal String representation of the encoded message.
+     * @throws exception.UnexpectedErrorException If anything goes wrong.
+     */
+    public static String encode(byte[] message) throws UnexpectedErrorException {
         MessageDigest messageDigest;
         try {
-            // Obtén una instancia de MessageDigest que usa SHA
             messageDigest = MessageDigest.getInstance("SHA");
-            // Convierte el texto en un array de bytes 
-            byte[] textos = texto.getBytes();
-            // Actualiza el MessageDigest con el array de bytes
-            messageDigest.update(texto.getBytes());
-            textos = messageDigest.digest();
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < textos.length; i++) {
-                hexString.append(Integer.toHexString(0xFF & textos[i]));
+            messageDigest.update(message);
+            //Getting encoded message.
+            byte resumen[] = messageDigest.digest();
+            //Calculating the hexadecimal value of the encodedMessage.
+            String hexMessage = "";
+            for (int i = 0; i < resumen.length; i++) {
+                String h = Integer.toHexString(resumen[i] & 0xFF);
+                if (h.length() == 1) {
+                    hexMessage += "0";
+                }
+                hexMessage += h;
             }
-            return hexString.toString().toUpperCase();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            
+            return hexMessage.toUpperCase();
+        } catch (NoSuchAlgorithmException ex) {
+            throw new UnexpectedErrorException(ex);
         }
-        return null;
     }
 
 }

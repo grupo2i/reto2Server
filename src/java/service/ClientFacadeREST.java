@@ -20,6 +20,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NoContentException;
+import security.Hashing;
+import security.PublicCrypt;
+import security.PublicDecrypt;
 
 /**
  * Defines REST services for Client entity.
@@ -70,8 +73,22 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
     public void edit(Client entity) throws InternalServerErrorException {
         try {
             LOGGER.log(Level.INFO, "Starting method edit on {0}", ClientFacadeREST.class.getName());
+            Client client = find(entity.getId());
+            //Checking if the password of the client is encoded
+            //with both SHA and RSA or only with RSA...
+            if (new String(PublicDecrypt.decode(entity.getPassword()))
+                    .equalsIgnoreCase(new String(PublicDecrypt
+                            .decode(client.getPassword())))) {
+                //Password is encoded with SHA and RSA.
+                //Decoding with RSA to merge the password encoded with SHA.
+                entity.setPassword(new String(PublicDecrypt.decode(entity.getPassword())));
+            } else {
+                //Password is encoded with RSA.
+                //Decoding with RSA and encoding with SHA.
+                entity.setPassword(Hashing.encode(PublicDecrypt.decode(entity.getPassword())));
+            }
             super.edit(entity);
-        } catch (UnexpectedErrorException ex) {
+        } catch (UnexpectedErrorException | NoContentException ex) {
             throw new InternalServerErrorException(ex);
         }
     }
@@ -111,7 +128,11 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
             if (client == null) {
                 throw new NoContentException("The client does not exist");
             }
-
+            //Detaching the client to encode the password with RSA.
+            //The password is already encoded with SHA.
+            em.detach(client);
+            //Encoding password with RSA.
+            client.setPassword(PublicCrypt.encode(client.getPassword()));
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
@@ -127,6 +148,7 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
     @GET
     @Path("getEventsByClient/{id}")
     @Produces({MediaType.APPLICATION_XML})
+    @Override
     public List<Event> getEventsByClientId(@PathParam("id") Integer id)
             throws InternalServerErrorException {
         try {
