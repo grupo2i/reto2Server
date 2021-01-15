@@ -46,9 +46,9 @@ public class ArtistFacadeREST extends AbstractFacade<Artist> {
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
-    public void create(Artist entity) {
+    public void create(Artist entity) throws UnexpectedErrorException {
         //Encode the password with hashing algorithm.
-        entity.setPassword(Hashing.encode(entity.getPassword()));
+        entity.setPassword(Hashing.encode(entity.getPassword().getBytes()));
         try {
             LOGGER.log(Level.INFO, "Starting method create on {0}", ArtistFacadeREST.class.getName());
             super.create(entity);

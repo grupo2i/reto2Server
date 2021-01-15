@@ -35,8 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT us FROM User us WHERE us.login like :login AND us.password like :password"
     ),
     @NamedQuery(
-            name = "getPrivilege",
-            query = "SELECT userPrivilege FROM User WHERE login like :login"
+            name = "getUserByLogin",
+            query = "SELECT us FROM User us WHERE us.login like :login"
     )
 })
 @Entity
