@@ -56,24 +56,20 @@ public class User implements Serializable {
     /**
      * Unique name of the User in the system.
      */
-    @NotNull
     private String login;
     /**
      * Email of the User.
      */
-    @NotNull
     @Pattern(regexp = "^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*"
             + "(\\.[A-Za-z]{2,})$")
     private String email;
     /**
      * Full and real name of the User.
      */
-    @NotNull
     private String fullName;
     /**
      * Brief description the Users writes about themselves.
      */
-    @NotNull
     private String biography;
     /**
      * Two possible value enum that defines the Users status.
@@ -90,18 +86,15 @@ public class User implements Serializable {
     /**
      * Credential of the User.
      */
-    @NotNull
     private String password;
     /**
      * Specifies the last time the User loged in into the system.
      */
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastAccess;
     /**
      * Specifies the last time the User chaged their password.
      */
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastPasswordChange;
     /**
