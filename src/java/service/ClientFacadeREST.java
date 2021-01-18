@@ -3,6 +3,9 @@ package service;
 import entity.Client;
 import entity.Event;
 import exception.UnexpectedErrorException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,8 +58,45 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
     public void create(Client entity) throws InternalServerErrorException {
         try {
             LOGGER.log(Level.INFO, "Starting method create on {0}", ClientFacadeREST.class.getName());
+            //Decoding password with RSA and encoding with SHA.
+            entity.setPassword(Hashing.encode(PublicDecrypt.decode(entity.getPassword())));
             super.create(entity);
         } catch (UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
+    }
+    
+    /**
+     * Persists a Client coming from the android client application in the database.
+     * 
+     * Android client application uses retrofit with SimpleXMLConverter which
+     * cannot convert dates that is why the Client entity in the application takes
+     * dates as Strings which then are converted to null by the server. That is
+     * why it is needed a 'create' method that takes the current date of the clients
+     * registration as a parameter and sets the clients lastAccess and
+     * lastPasswordChange attributes before itis persisted.
+     *
+     * @param entity The Client to be persisted.
+     * @param currentDate Current date of the clients registration.
+     * @throws InternalServerErrorException If anything goes wrong.
+     */
+    @POST
+    @Path("{currentDate}")
+    @Consumes({MediaType.APPLICATION_XML})
+    public void create(Client entity, @PathParam("currentDate") String currentDate)
+            throws InternalServerErrorException {
+        try {
+            LOGGER.log(Level.INFO, "Starting method create on {0}", ClientFacadeREST.class.getName());
+            //Formatter to convert the currentDate String into a Date.
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //Setting the attributes of the client that are dates with the given
+            //formatted string representing the date of registration.
+            entity.setLastAccess(formatter.parse(currentDate));
+            entity.setLastPasswordChange(formatter.parse(currentDate));
+            //Decoding password with RSA and encoding with SHA.
+            entity.setPassword(Hashing.encode(PublicDecrypt.decode(entity.getPassword())));
+            super.create(entity);
+        } catch (ParseException | UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
     }
@@ -172,7 +212,12 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
     public List<Client> getAllClients() throws InternalServerErrorException {
         try {
             LOGGER.log(Level.INFO, "Starting method getAllClients on {0}", ClientFacadeREST.class.getName());
-            return super.getAllClients();
+            List<Client> clients = super.getAllClients();
+            //Encoding all clients password with RSA.
+            for(Client client:clients) {
+                client.setPassword(PublicCrypt.encode(client.getPassword()));
+            }
+            return clients;
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }

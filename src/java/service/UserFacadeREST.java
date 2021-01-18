@@ -141,7 +141,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Override
     public User signIn(@PathParam("login") String login,
             @PathParam("password") String encodedPassword)
-            throws InternalServerErrorException {
+            throws InternalServerErrorException, NotAuthorizedException {
         User user = null;
         try {
             LOGGER.log(Level.INFO, "Starting method signIn on {0}", UserFacadeREST.class.getName());
@@ -178,6 +178,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public User getPrivilege(@PathParam("login") String login) throws InternalServerErrorException {
         try {
             LOGGER.log(Level.INFO, "Starting method getPrivilege on {0}", UserFacadeREST.class.getName());
+            //Encapsulating userPrivilege attribute on a User object
+            //to avoid xml syntax error due to plain text production.
             User user = new User();
             user.setUserPrivilege(super.getPrivilege(login).getUserPrivilege());
             return user;
