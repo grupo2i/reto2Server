@@ -194,7 +194,13 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public User getUserByLogin(@PathParam("login") String login) throws InternalServerErrorException {
         try {
             LOGGER.log(Level.INFO, "Starting method getUserByLoginv on {0}", UserFacadeREST.class.getName());
-            return super.getUserByLogin(login);
+            User user = super.getUserByLogin(login);
+            //Detaching user to encode the password with RSA.
+            //The password is already encoded with SHA.
+            em.detach(user);
+            //Encoding password with RSA.
+            user.setPassword(PublicCrypt.encode(user.getPassword()));
+            return user;
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
