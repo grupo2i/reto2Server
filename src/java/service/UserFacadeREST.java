@@ -174,15 +174,27 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @GET
     @Path("getPrivilege/{login}")
     @Produces({MediaType.APPLICATION_XML})
-    @Override
     public User getPrivilege(@PathParam("login") String login) throws InternalServerErrorException {
         try {
             LOGGER.log(Level.INFO, "Starting method getPrivilege on {0}", UserFacadeREST.class.getName());
             //Encapsulating userPrivilege attribute on a User object
             //to avoid xml syntax error due to plain text production.
             User user = new User();
-            user.setUserPrivilege(super.getPrivilege(login).getUserPrivilege());
+            user.setUserPrivilege(super.getUserByLogin(login).getUserPrivilege());
             return user;
+        } catch (UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
+    }
+    
+    @GET
+    @Path("getUserByLogin/{login}")
+    @Produces({MediaType.APPLICATION_XML})
+    @Override
+    public User getUserByLogin(@PathParam("login") String login) throws InternalServerErrorException {
+        try {
+            LOGGER.log(Level.INFO, "Starting method getUserByLoginv on {0}", UserFacadeREST.class.getName());
+            return super.getUserByLogin(login);
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
