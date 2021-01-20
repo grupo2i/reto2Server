@@ -5,7 +5,6 @@ import entity.Event;
 import exception.UnexpectedErrorException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -215,6 +214,7 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
             List<Client> clients = super.getAllClients();
             //Encoding all clients password with RSA.
             for(Client client:clients) {
+                em.detach(client);
                 client.setPassword(PublicCrypt.encode(client.getPassword()));
             }
             return clients;

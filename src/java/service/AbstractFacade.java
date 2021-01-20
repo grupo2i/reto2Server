@@ -199,15 +199,15 @@ public abstract class AbstractFacade<T> {
     }
 
     /**
-     * Looks for the UserPrivilege with the specified user.
+     * Returns the User with the specified login.
      *
      * @param login The login of the User.
-     * @return The UserPrivilege as a string.
+     * @return User with specified login.
      * @throws NotAuthorizedException If the login doesn't match with
      * a registered user.
      * @throws UnexpectedErrorException If anything goes wrong.
      */
-    public User getPrivilege(String login) throws UnexpectedErrorException, NotAuthorizedException {
+    public User getUserByLogin(String login) throws UnexpectedErrorException, NotAuthorizedException {
         try {
             LOGGER.log(Level.INFO, "Starting method getPrivilege on {0}", AbstractFacade.class.getName());
             return (User)getEntityManager()
