@@ -14,6 +14,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.NoContentException;
 
 /**
  *
@@ -241,6 +243,19 @@ public abstract class AbstractFacade<T> {
                 .setParameter("eventId", id)
                 .getResultList();
         } catch (Exception ex) {
+            throw new UnexpectedErrorException(ex);
+        }
+    }
+    
+    public User getUserByEmail(String email) throws UnexpectedErrorException, NoResultException {
+        try {
+            return (User) getEntityManager()
+                    .createNamedQuery("getUserByEmail")
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch(NoResultException ex) {
+            throw ex;
+        } catch(Exception ex) {
             throw new UnexpectedErrorException(ex);
         }
     }

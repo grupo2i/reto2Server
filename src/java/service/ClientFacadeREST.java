@@ -2,6 +2,7 @@ package service;
 
 import entity.Client;
 import entity.Event;
+import entity.User;
 import exception.UnexpectedErrorException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,12 +10,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -25,6 +29,7 @@ import javax.ws.rs.core.NoContentException;
 import security.Hashing;
 import security.PublicCrypt;
 import security.PublicDecrypt;
+import security.RandomPasswordGenerator;
 
 /**
  * Defines REST services for Client entity.
@@ -96,7 +101,7 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
             entity.setPassword(Hashing.encode(PublicDecrypt.decode(entity.getPassword())));
             super.create(entity);
         } catch (ParseException | UnexpectedErrorException ex) {
-            throw new InternalServerErrorException(ex);
+            throw new InternalServerErrorException(new UnexpectedErrorException());
         }
     }
 
@@ -155,6 +160,7 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
      * @param id The id of the client.
      * @return The requested client.
      * @throws InternalServerErrorException If anything goes wrong.
+     * @throws javax.ws.rs.core.NoContentException If the retrieved client is null.
      */
     @GET
     @Path("{id}")
@@ -167,11 +173,13 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
             if (client == null) {
                 throw new NoContentException("The client does not exist");
             }
-            //Detaching the client to encode the password with RSA.
-            //The password is already encoded with SHA.
-            em.detach(client);
-            //Encoding password with RSA.
-            client.setPassword(PublicCrypt.encode(client.getPassword()));
+            if(client.getPassword() != null) {
+                //Detaching the client to encode the password with RSA.
+                //The password is already encoded with SHA.
+                em.detach(client);
+                //Encoding password with RSA.
+                client.setPassword(PublicCrypt.encode(client.getPassword()));
+            }
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
@@ -214,14 +222,81 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
             List<Client> clients = super.getAllClients();
             //Encoding all clients password with RSA.
             for(Client client:clients) {
-                em.detach(client);
-                client.setPassword(PublicCrypt.encode(client.getPassword()));
+                //Checking the password is not null to avoid NullPointerException.
+                if(client.getPassword() != null) {
+                    em.detach(client);
+                    //Encoding password with RSA.
+                    client.setPassword(PublicCrypt.encode(client.getPassword()));
+                }
             }
             return clients;
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
     }
+    
+    /**
+     * Return the User with the specified email from the database.
+     * 
+     * @param email The specified email.
+     * @return User with the specified email.
+     * @throws InternalServerErrorException If anything goes wrong.
+     * @throws NotAuthorizedException If no User with specified email if found.
+     */
+    @GET
+    @Path("getUserByEmail/{email}")
+    @Produces({MediaType.APPLICATION_XML})
+    @Override
+    public User getUserByEmail(@PathParam("email") String email) throws InternalServerErrorException, NotAuthorizedException {
+        LOGGER.log(Level.INFO, "Starting method getUserByEmail on {0}", ClientFacadeREST.class.getName());
+        User user;
+        try {
+            user = super.getUserByEmail(email);
+            if(user == null) {
+                throw new NotAuthorizedException("User not found, incorrect email.");
+            }
+            em.detach(user);
+            //Encoding password with RSA.
+            user.setPassword(PublicCrypt.encode(user.getPassword()));
+        } catch(NoResultException ex) {
+            throw new NotAuthorizedException("User not found, incorrect email.");
+        } catch(UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
+        return user;
+    }
+    
+    /**
+     * Updates the Client with the specified email with a random password
+     * and sends an email to notify it.
+     * 
+     * @param email The specifies email.
+     * @throws InternalServerErrorException If anything goes wrong.
+     */
+    @PUT
+    @Consumes({MediaType.APPLICATION_XML})
+    @Path("recoverPassword/{email}")
+    public void recoverPassword(@PathParam("email") String email) throws InternalServerErrorException, NotAuthorizedException {
+        try {
+            LOGGER.log(Level.INFO, "Starting method recoverPassword on {0}", ClientFacadeREST.class.getName());
+            Client client = (Client) getUserByEmail(email);
+            //Getting random password.
+            String randomPassword = RandomPasswordGenerator.getRandomPassword(10);
+            //Encoding password with RSA.
+            String encodedRandomPassword = PublicCrypt.encode(randomPassword);
+            //Creating message to be sent by email.
+            String message = "Your password has been updated to: " + randomPassword;
+            //Sending email.
+            EmailService.sendMail(email, "Password Recovery", message);
+            //Updating client...
+            client.setPassword(encodedRandomPassword);
+            edit(client);
+        } catch(MessagingException | UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
+        
+    }
+    
 
     /**
      * @return EntityManager instance used in the class.

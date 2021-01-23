@@ -1,8 +1,12 @@
 package security;
 
+import exception.UnexpectedErrorException;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.spec.KeySpec;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -10,58 +14,67 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- *
+ * Contains the methods meant to encode with AES.
+ * 
  * @author Ander Vicente, Aitor Fidalgo
  */
 public class PrivateCrypt {
-    // Fíjate que el String es de exactamente 16 bytes
-    private static byte[] salt = "esta es la salt!".getBytes(); 
+    
+    private static final Logger LOGGER = Logger.getLogger(PrivateCrypt.class.getName());
+    /**
+     * Salt used to encode.
+     */
+    private static final byte[] SALT = "esta es la salt!".getBytes(); 
 
     /**
-     * Cifra un texto con AES, modo CBC y padding PKCS5Padding (simétrica) y lo
-     * retorna
+     * Encodes the specified message with AES/CBC/PKCS5Padding.
      * 
-     * @param clave   La clave del usuario
-     * @param mensaje El mensaje a cifrar
-     * @return Mensaje cifrado
+     * Uses the specified secret word to encode the message and returns it. Also
+     * creates a file in the specified path with with the encoded message.
+     * 
+     * @param secretWord The specified secret word.
+     * @param message The specified message.
+     * @param path Path of the file where the encoded message will be stored.
+     * @return Encoded message.
+     * @throws exception.UnexpectedErrorException If anything goes wrong.
      */
-    public static String encode(String clave, String mensaje) {
+    public static String encode(String secretWord, String message, String path) throws UnexpectedErrorException {
         String ret = null;
-        KeySpec keySpec = null;
-        SecretKeyFactory secretKeyFactory = null;
+        KeySpec keySpec;
+        SecretKeyFactory secretKeyFactory;
+        
         try {
-
-            // Creamos un SecretKey usando la clave + salt
-            keySpec = new PBEKeySpec(clave.toCharArray(), salt, 65536, 128); // AES-128
+            LOGGER.log(Level.INFO, "Starting method encode on {0}", PrivateCrypt.class.getName());
+            //Creating SecretKey using the secret word and salt.
+            keySpec = new PBEKeySpec(secretWord.toCharArray(), SALT, 65536, 128); // AES-128
             secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] key = secretKeyFactory.generateSecret(keySpec).getEncoded();
             SecretKey privateKey = new SecretKeySpec(key, 0, key.length, "AES");
 
-            // Creamos un Cipher con el algoritmos que vamos a usar
+            //Creating Cipher with the AES algorithm.
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, privateKey);
-            byte[] encodedMessage = cipher.doFinal(mensaje.getBytes()); // Mensaje cifrado !!!
-            byte[] iv = cipher.getIV(); // vector de inicializaci�n por modo CBC
+            //Getting encoded message.
+            byte[] encodedMessage = cipher.doFinal(message.getBytes());
+            byte[] iv = cipher.getIV(); // vector de inicializacion por modo CBC
 
-            // Guardamos el mensaje codificado: IV (16 bytes) + Mensaje
+            //Saving the encoded message and iv in a file.
             byte[] combined = concatArrays(iv, encodedMessage);
-
-            fileWriter(".\\src\\java\\security\\EmailCredentials.dat", combined);
+            fileWriter(path, combined);
 
             ret = new String(encodedMessage);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            throw new UnexpectedErrorException(ex);
         }
         return ret;
     }
 
     /**
-     * Retorna una concatenaci�n de ambos arrays
+     * Concatenates two given arrays ans returns the result.
      * 
-     * @param array1
-     * @param array2
-     * @return Concatenaci�n de ambos arrays
+     * @param array1 A given array to be concatenated.
+     * @param array2 A given array to be concatenated.
+     * @return The result of the concatenation.
      */
     private static byte[] concatArrays(byte[] array1, byte[] array2) {
         byte[] ret = new byte[array1.length + array2.length];
@@ -71,17 +84,14 @@ public class PrivateCrypt {
     }
 
     /**
-     * Escribe un fichero
+     * Creates a file with the specified path and content.
      * 
-     * @param path Path del fichero
-     * @param text Texto a escibir
+     * @param path The specified path.
+     * @param text The specified content.
      */
-    private static void fileWriter(String path, byte[] text) {
-        try (FileOutputStream fos = new FileOutputStream(path)) {
-                fos.write(text);
-        } catch (IOException e) {
-                e.printStackTrace();
-        }
+    private static void fileWriter(String path, byte[] text) throws FileNotFoundException, IOException {
+        LOGGER.log(Level.INFO, "Starting method fileWriter on {0}", PrivateCrypt.class.getName());
+        FileOutputStream fos = new FileOutputStream(path);
+        fos.write(text);
     }
-    
 }
