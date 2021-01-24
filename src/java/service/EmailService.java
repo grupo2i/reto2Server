@@ -1,5 +1,6 @@
 package service;
 
+import exception.UnexpectedErrorException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -32,8 +33,6 @@ public class EmailService {
     // DNS Host + SMTP Port
     private static String smtp_host = null;
     private static int smtp_port = 0;
-    //Secret word for symmetric decryption.
-    private static String secretWord = null;
     //Properties file containing the data avobe.
     private static ResourceBundle propertiesFile = null;
 
@@ -43,23 +42,24 @@ public class EmailService {
      * @param receiver The reciever of the email.
      * @param subject The subject of the email.
      * @param text The text of the email.
-     * @throws MessagingException If anything goes wrong.
+     * @throws MessagingException If any messaging error occurres.
+     * @throws exception.UnexpectedErrorException If anything goes wrong.
      */
-    public static void sendMail(String receiver, String subject, String text) throws MessagingException {
+    public static void sendMail(String receiver, String subject, String text)
+            throws MessagingException, UnexpectedErrorException {
         LOGGER.log(Level.INFO, "Starting method sendEmail on {0}", EmailService.class.getName());
 
         //Getting email properties from properties file...
         propertiesFile = ResourceBundle.getBundle("properties.properties");
         smtp_host = propertiesFile.getString("smtpHost");
         smtp_port = Integer.valueOf(propertiesFile.getString("smtpPort"));
-        //Getting secret word for symmetric decryption.
-        secretWord = propertiesFile.getString("secretWord");
         //Getting user and password...
-        String emailCredentials = PrivateDecrypt.decryptMessage(secretWord);
+        String emailCredentials = PrivateDecrypt.decodeEmailCredentials();
         user = emailCredentials.substring(0, emailCredentials.indexOf("?"));
         password = emailCredentials.substring(emailCredentials.indexOf("?") + 1);
 
         //Setting email properties...
+        LOGGER.log(Level.INFO, "Setting email properties on {0}", EmailService.class.getName());
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", true);
         properties.put("mail.smtp.starttls.enable", "true");
@@ -82,7 +82,7 @@ public class EmailService {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(user));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver)); // Ej: receptor@gmail.com
-        message.setSubject(subject); // Asunto del mensaje
+        message.setSubject(subject);
 
         // A mail can have several parts
         Multipart multipart = new MimeMultipart();
