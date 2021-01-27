@@ -1,5 +1,6 @@
 package service;
 
+import entity.Client;
 import entity.Club;
 import exception.UnexpectedErrorException;
 import java.util.List;
@@ -19,6 +20,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NoContentException;
+import security.Hashing;
+import security.PublicCrypt;
+import security.PublicDecrypt;
 
 /**
  *
@@ -41,9 +45,12 @@ public class ClubFacadeREST extends AbstractFacade<Club> {
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Club entity) {
-        try {
+        
+        try {       
             LOGGER.log(Level.INFO, "Starting method create on {0}", ClubFacadeREST.class.getName());
+            entity.setPassword(Hashing.encode(PublicDecrypt.decode(entity.getPassword())));
             super.create(entity);
+            
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
@@ -55,6 +62,7 @@ public class ClubFacadeREST extends AbstractFacade<Club> {
     public void edit(Club entity) {
         try {
             LOGGER.log(Level.INFO, "Starting method edit on {0}", ClubFacadeREST.class.getName());
+            entity.setPassword(Hashing.encode(PublicDecrypt.decode(entity.getPassword())));
             super.edit(entity);
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
@@ -83,6 +91,8 @@ public class ClubFacadeREST extends AbstractFacade<Club> {
             if (club == null) {
                 throw new NoContentException("The club does not exist");
             }
+            em.detach(club);
+            club.setPassword(PublicCrypt.encode(club.getPassword()));
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
@@ -97,7 +107,24 @@ public class ClubFacadeREST extends AbstractFacade<Club> {
     @Produces({MediaType.APPLICATION_XML})
     @Override
     public List<Club> getAllClubs(){
-        return super.getAllClubs();
+        try{
+            LOGGER.log(Level.INFO, "Starting method getAllClubs on {0}", ClubFacadeREST.class.getName());
+            List<Club> clubs = super.getAllClubs();
+            //Encoding all clients password with RSA.
+            for(Club club:clubs) {
+                //Checking the password is not null to avoid NullPointerException.
+                if(club.getPassword() != null) {
+                    em.detach(club);
+                    //Encoding password with RSA.
+                    club.setPassword(PublicCrypt.encode(club.getPassword()));
+                }
+            }
+            return clubs;
+        }catch (UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
+        
+       
     }
 
     @Override
