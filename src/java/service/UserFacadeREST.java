@@ -181,7 +181,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @GET
     @Path("getPrivilege/{login}")
     @Produces({MediaType.APPLICATION_XML})
-    public User getPrivilege(@PathParam("login") String login) throws InternalServerErrorException {
+    public User getPrivilege(@PathParam("login") String login) throws InternalServerErrorException, NotAuthorizedException {
         try {
             LOGGER.log(Level.INFO, "Starting method getPrivilege on {0}", UserFacadeREST.class.getName());
             //Encapsulating userPrivilege attribute on a User object
@@ -189,6 +189,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
             User user = new User();
             user.setUserPrivilege(super.getUserByLogin(login).getUserPrivilege());
             return user;
+        } catch(NotAuthorizedException ex) {
+            throw new NotAuthorizedException("User not found, incorrect login or password.", ex.getResponse());
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }

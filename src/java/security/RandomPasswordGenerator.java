@@ -14,7 +14,7 @@ public class RandomPasswordGenerator {
      */
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                            + "abcdefghijklmnopqrstuvwxyz"
-                                           + "0123456789*+-¿?(){}[]@#$&%";
+                                           + "0123456789*+-?(){}[]@#$&%";
     
     /**
      * Creates a random password of the specified lenght.
