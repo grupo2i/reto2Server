@@ -71,4 +71,24 @@ public class RatingId implements Serializable {
     public void setEventId(Integer eventId) {
         this.eventId = eventId;
     }
+    
+     @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (clientId != null ? clientId.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the ratingId fields are not set
+        if (!(object instanceof Rating)) {
+            return false;
+        }
+        RatingId other = (RatingId) object;
+        if ((this.clientId == null && other.clientId != null) || (this.clientId != null && !this.clientId.equals(other.clientId))) {
+            return false;
+        }
+        return true;
+    }
 }

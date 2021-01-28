@@ -118,6 +118,10 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
         try {
             LOGGER.log(Level.INFO, "Starting method edit on {0}", ClientFacadeREST.class.getName());
             Client client = find(entity.getId());
+            //The password is already encoded with SHA.
+            em.detach(client);
+            //Encoding password with RSA.
+            client.setPassword(PublicCrypt.encode(client.getPassword()));
             //Checking if the password of the client is encoded
             //with both SHA and RSA or only with RSA...
             if (new String(PublicDecrypt.decode(entity.getPassword()))
@@ -172,13 +176,6 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
             client = super.find(id);
             if (client == null) {
                 throw new NoContentException("The client does not exist");
-            }
-            if(client.getPassword() != null) {
-                //Detaching the client to encode the password with RSA.
-                //The password is already encoded with SHA.
-                em.detach(client);
-                //Encoding password with RSA.
-                client.setPassword(PublicCrypt.encode(client.getPassword()));
             }
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
