@@ -1,11 +1,14 @@
 package service;
 
+import entity.Client;
+import entity.Event;
 import entity.Rating;
 import entity.RatingId;
 import exception.UnexpectedErrorException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -20,6 +23,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NoContentException;
 import javax.ws.rs.core.PathSegment;
 
 /**
@@ -29,6 +33,12 @@ import javax.ws.rs.core.PathSegment;
 @Stateless
 @Path("entity.rating")
 public class RatingFacadeREST extends AbstractFacade<Rating> {
+
+    @EJB
+    private ClientFacadeREST clientFacadeREST;
+
+    @EJB
+    private EventFacadeREST eventFacadeREST;
 
     private static final Logger LOGGER = Logger.getLogger(RatingFacadeREST.class.getName());
     
@@ -72,10 +82,16 @@ public class RatingFacadeREST extends AbstractFacade<Rating> {
     public void create(Rating entity) throws InternalServerErrorException {
         try {
             LOGGER.log(Level.INFO, "Editing create {0}", entity);
+            Client client = clientFacadeREST.find(entity.getId().getClientId());
+            Event event = eventFacadeREST.find(entity.getId().getEventId());
+            entity.setClient(client);
+            entity.setEvent(event);
             super.create(entity);
         } catch (UnexpectedErrorException e) {
             LOGGER.log(Level.INFO, "Could not create entity {0}", entity);
             throw new InternalServerErrorException(e.getMessage());
+        } catch (NoContentException ex) {
+            Logger.getLogger(RatingFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
