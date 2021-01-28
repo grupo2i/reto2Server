@@ -22,8 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     ),
     @NamedQuery(
             name = "getAllClients", query = "SELECT c FROM Client c"
-            ),
-    
+            )
 })
 @Entity
 @Table(name="client", schema="reto2G2i")

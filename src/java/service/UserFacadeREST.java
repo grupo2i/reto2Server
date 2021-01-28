@@ -19,6 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NoContentException;
 import security.Hashing;
 import security.PublicCrypt;
 import security.PublicDecrypt;
@@ -54,6 +55,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public void create(User entity) throws InternalServerErrorException {
         try {
             LOGGER.log(Level.INFO, "Starting method create on {0}", UserFacadeREST.class.getName());
+            //Decoding password with RSA and encoding with SHA.
+            entity.setPassword(Hashing.encode(PublicDecrypt.decode(entity.getPassword())));
             super.create(entity);
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
@@ -73,6 +76,9 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public void edit(User entity) throws InternalServerErrorException {
         try {
             LOGGER.log(Level.INFO, "Starting method edit on {0}", UserFacadeREST.class.getName());
+            //Decoding password with RSA.
+            //The password is already encoded with SHA.
+            entity.setPassword(new String(PublicDecrypt.decode(entity.getPassword())));
             super.edit(entity);
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
@@ -104,24 +110,25 @@ public class UserFacadeREST extends AbstractFacade<User> {
      * @param id The id of the User.
      * @return The requested User without the password attribute.
      * @throws InternalServerErrorException If anything goes wrong.
+     * @throws javax.ws.rs.core.NoContentException If the retrieved User is null.
      */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public User find(@PathParam("id") Integer id) throws InternalServerErrorException, NoResultException {
+    public User find(@PathParam("id") Integer id) throws InternalServerErrorException, NoContentException {
         User user = null;
         try {
             LOGGER.log(Level.INFO, "Starting method find on {0}", UserFacadeREST.class.getName());
             user = super.find(id);
             if (user == null) {
-                throw new NoResultException("The specified user does not exist.");
+                throw new NoContentException("The specified user does not exist.");
             }
             //Detaching user to encode the password with RSA.
             //The password is already encoded with SHA.
             em.detach(user);
             //Encoding password with RSA.
             user.setPassword(PublicCrypt.encode(user.getPassword()));
-        } catch (UnexpectedErrorException | NoResultException ex) {
+        } catch (UnexpectedErrorException | NoContentException ex) {
             throw new InternalServerErrorException(ex);
         }
 
@@ -174,7 +181,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @GET
     @Path("getPrivilege/{login}")
     @Produces({MediaType.APPLICATION_XML})
-    public User getPrivilege(@PathParam("login") String login) throws InternalServerErrorException {
+    public User getPrivilege(@PathParam("login") String login) throws InternalServerErrorException, NotAuthorizedException {
         try {
             LOGGER.log(Level.INFO, "Starting method getPrivilege on {0}", UserFacadeREST.class.getName());
             //Encapsulating userPrivilege attribute on a User object
@@ -182,6 +189,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
             User user = new User();
             user.setUserPrivilege(super.getUserByLogin(login).getUserPrivilege());
             return user;
+        } catch(NotAuthorizedException ex) {
+            throw new NotAuthorizedException("User not found, incorrect login or password.", ex.getResponse());
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
@@ -204,6 +213,37 @@ public class UserFacadeREST extends AbstractFacade<User> {
         } catch (UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
+    }
+    
+    /**
+     * Return the User with the specified email from the database.
+     * 
+     * @param email The specified email.
+     * @return User with the specified email.
+     * @throws InternalServerErrorException If anything goes wrong.
+     * @throws NotAuthorizedException If no User with specified email if found.
+     */
+    @GET
+    @Path("getUserByEmail/{email}")
+    @Produces({MediaType.APPLICATION_XML})
+    @Override
+    public User getUserByEmail(@PathParam("email") String email) throws InternalServerErrorException, NotAuthorizedException {
+        LOGGER.log(Level.INFO, "Starting method getUserByEmail on {0}", UserFacadeREST.class.getName());
+        User user;
+        try {
+            user = super.getUserByEmail(email);
+            if(user == null) {
+                throw new NotAuthorizedException("User not found, incorrect email.");
+            }
+            em.detach(user);
+            //Encoding password with RSA.
+            user.setPassword(PublicCrypt.encode(user.getPassword()));
+        } catch(NoResultException ex) {
+            throw new NotAuthorizedException("User not found, incorrect email.");
+        } catch(UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
+        return user;
     }
     
     /**

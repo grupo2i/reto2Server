@@ -7,6 +7,8 @@ import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.crypto.Cipher;
 
 /**
@@ -16,6 +18,7 @@ import javax.crypto.Cipher;
  */
 public class PublicCrypt {
 
+    private static final Logger LOGGER = Logger.getLogger(PublicCrypt.class.getName());
     /**
      * Relative path of the public key used to encode.
      */
@@ -27,10 +30,12 @@ public class PublicCrypt {
      *
      * @param message The message to be encoded.
      * @return El message cifrado
+     * @throws exception.UnexpectedErrorException If anything goes wrong.
      */
     public static String encode(String message) throws UnexpectedErrorException {
         String encodedMessageStr = null;
         try {
+            LOGGER.log(Level.INFO, "Starting method encode on {0}", PublicCrypt.class.getName());
             byte[] encodedMessage;
             //Getting the public key in a byte array.
             byte fileKey[] = getPublicKey();
@@ -57,16 +62,16 @@ public class PublicCrypt {
     /**
      * Reads the public key file and returns it as a byte array.
      *
-     * @return Private key content in byte array.
+     * @return Public key content in byte array.
      * @throws IOException If and I/O error occurs.
      */
     public static byte[] getPublicKey() throws IOException {
+        LOGGER.log(Level.INFO, "Starting method getPublicKey on {0}", PublicCrypt.class.getName());
         byte[] publicKeyBytes;
-        try (InputStream inputStream = PublicCrypt.class.getClassLoader()
-                .getResourceAsStream(PUBLIC_KEY_PATH)) {
-            publicKeyBytes = new byte[inputStream.available()];
-            inputStream.read(publicKeyBytes);
-        }
+        InputStream inputStream = PublicCrypt.class.getClassLoader()
+                .getResourceAsStream(PUBLIC_KEY_PATH);
+        publicKeyBytes = new byte[inputStream.available()];
+        inputStream.read(publicKeyBytes);
         return publicKeyBytes;
     }
 
@@ -77,6 +82,7 @@ public class PublicCrypt {
      * @return Encoded hexadecimal representation of the given message.
      */
     static String encodeToHexadecimal(byte[] message) {
+        LOGGER.log(Level.INFO, "Starting method encodeToHexadecimal on {0}", PublicCrypt.class.getName());
         String hexadecimalString = "";
         for (int i = 0; i < message.length; i++) {
             String h = Integer.toHexString(message[i] & 0xFF);

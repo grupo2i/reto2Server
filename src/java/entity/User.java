@@ -37,6 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "getUserByLogin",
             query = "SELECT us FROM User us WHERE us.login like :login"
+    ),
+    @NamedQuery(
+            name = "getUserByEmail",
+            query = "SELECT us FROM User us WHERE us.email like :email"
     )
 })
 @Entity

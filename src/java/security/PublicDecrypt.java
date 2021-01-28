@@ -7,6 +7,8 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.crypto.Cipher;
 
 /**
@@ -16,6 +18,7 @@ import javax.crypto.Cipher;
  */
 public class PublicDecrypt {
     
+    private static final Logger LOGGER = Logger.getLogger(PublicDecrypt.class.getName());
     /**
      * Relative path of the private key used to decode.
      */
@@ -35,19 +38,21 @@ public class PublicDecrypt {
     public static byte[] decode(String encodedMessageStr) throws UnexpectedErrorException {
         byte[] decodedMessage = null;
         try {
+            LOGGER.log(Level.INFO, "Starting method decode on {0}", PublicDecrypt.class.getName());
             //Decoding hexadecimal message.
             byte[] encodedMessage = decodeHexadecimal(encodedMessageStr);
-            //Getting private key.
+            //Getting private key file content.
             byte fileKey[] = getPrivateKey();
             
-            //Setting the properties for the decoding...
+            //Getting a PrivateKey for the decoding...
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             PKCS8EncodedKeySpec pKCS8EncodedKeySpec = new PKCS8EncodedKeySpec(fileKey);
             PrivateKey privateKey = keyFactory.generatePrivate(pKCS8EncodedKeySpec);
 
-            //Decoding with private key...
+            //Getting Cipher for RSA algorithm...
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
+            //Decoding message.
             decodedMessage = cipher.doFinal(encodedMessage);
         } catch (Exception ex) {
             throw new UnexpectedErrorException(ex);
@@ -62,12 +67,12 @@ public class PublicDecrypt {
      * @throws IOException If and I/O error occurs.
      */
     public static byte [] getPrivateKey() throws IOException{ 
+        LOGGER.log(Level.INFO, "Starting method getPrivateKey on {0}", PublicDecrypt.class.getName());
         byte[] publicKeyBytes;
-        try (InputStream inputStream = PublicDecrypt.class.getClassLoader()
-                .getResourceAsStream(PRIVATE_KEY_PATH)) {
-            publicKeyBytes = new byte[inputStream.available()];
-            inputStream.read(publicKeyBytes);
-        }
+        InputStream inputStream = PublicDecrypt.class.getClassLoader()
+                .getResourceAsStream(PRIVATE_KEY_PATH);
+        publicKeyBytes = new byte[inputStream.available()];
+        inputStream.read(publicKeyBytes);
         return publicKeyBytes;
     }
 
@@ -78,6 +83,7 @@ public class PublicDecrypt {
      * @return Decoded byte array.
      */
     private static byte[] decodeHexadecimal(String encodedMessageStr) {
+        LOGGER.log(Level.INFO, "Starting method decodeHexadecimal on {0}", PublicDecrypt.class.getName());
         byte[] decodedMessage = new byte[encodedMessageStr.length() / 2];
         for (int i = 0; i < decodedMessage.length; i++) {
             int index = i * 2;
