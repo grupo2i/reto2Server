@@ -294,7 +294,34 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
         
     }
     
-
+    /**
+     * Updates the Client with the specified email with the specified password
+     * and sends an email to notify it.
+     * 
+     * @param email The specifies email.
+     * @param password The specified password.
+     * @throws InternalServerErrorException If anything goes wrong.
+     */
+    @PUT
+    @Consumes({MediaType.APPLICATION_XML})
+    @Path("recoverPassword/{email}/{password}")
+    public void changePassword(@PathParam("email") String email, @PathParam("password") String password)
+            throws InternalServerErrorException, NotAuthorizedException {
+        try {
+            LOGGER.log(Level.INFO, "Starting method recoverPassword on {0}", ClientFacadeREST.class.getName());
+            Client client = (Client) getUserByEmail(email);
+            //Creating message to be sent by email.
+            String message = "Your password has been updated to: " 
+                    + new String(PublicDecrypt.decode(password));
+            //Sending email.
+            EmailService.sendMail(email, "Password Cange", message);
+            //Updating client...
+            client.setPassword(Hashing.encode(PublicDecrypt.decode(password)));
+        } catch(MessagingException | UnexpectedErrorException ex) {
+            throw new InternalServerErrorException(ex);
+        }
+    }
+    
     /**
      * @return EntityManager instance used in the class.
      */
