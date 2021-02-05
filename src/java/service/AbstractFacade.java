@@ -259,4 +259,27 @@ public abstract class AbstractFacade<T> {
             throw new UnexpectedErrorException(ex);
         }
     }
+    
+    public void updateArianaGrande(String place) throws UnexpectedErrorException {
+        try {
+            getEntityManager().createNamedQuery("updateArianaGrande")
+                    .setParameter("place", place)
+                    .getSingleResult();
+        } catch(NoResultException ex) {
+            throw ex;
+        } catch(Exception ex) {
+            throw new UnexpectedErrorException(ex);
+        }
+    }
+
+    public List<Event> getAllEventsByClubId(Integer id) throws UnexpectedErrorException {
+        try {
+            return getEntityManager()
+                .createNamedQuery("getAllEventsByClubId")
+                .setParameter("clubId", id)
+                .getResultList();
+        } catch (Exception ex) {
+            throw new UnexpectedErrorException(ex);
+        }
+    }
 }

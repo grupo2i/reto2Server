@@ -26,6 +26,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "getAllEvents", 
             query = "SELECT ev FROM Event ev"
+    ),
+    @NamedQuery(
+            name = "getAllEventsByClubId",
+            query = "SELECT ev FROM Event ev WHERE ev.club.id=:clubId"
     )
 })
 @Entity

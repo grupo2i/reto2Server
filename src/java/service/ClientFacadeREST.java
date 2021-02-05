@@ -294,7 +294,7 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
         
     }
     
-    /**
+    /** 
      * Updates the Client with the specified email with the specified password
      * and sends an email to notify it.
      * 
@@ -304,7 +304,7 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
-    @Path("recoverPassword/{email}/{password}")
+    @Path("changePassword/{email}/{password}")
     public void changePassword(@PathParam("email") String email, @PathParam("password") String password)
             throws InternalServerErrorException, NotAuthorizedException {
         try {
@@ -316,7 +316,9 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
             //Sending email.
             EmailService.sendMail(email, "Password Cange", message);
             //Updating client...
-            client.setPassword(Hashing.encode(PublicDecrypt.decode(password)));
+            em.detach(client);
+            client.setPassword(password);
+            edit(client);
         } catch(MessagingException | UnexpectedErrorException ex) {
             throw new InternalServerErrorException(ex);
         }
